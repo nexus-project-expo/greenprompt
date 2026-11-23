@@ -1,0 +1,57 @@
+{
+  "n": 100,
+  "run_at": "24 Nov 2026, 01:05",
+  "energy_saved_pct": 55.3,
+  "gp_wh": 10.7351,
+  "baseline_wh": 24.0,
+  "quality_retained_pct": 79.3,
+  "answers_correct_pct": 93.1,
+  "quality_retained_incl_large_pct": 88.0,
+  "judged": 58,
+  "unjudged": 0,
+  "verdicts": {
+    "worse": 12,
+    "same": 45,
+    "large model": 42,
+    "better": 1
+  },
+  "trap_count": 10,
+  "paraphrase_count": 15,
+  "router_accuracy_pct": 92.9,
+  "router_n": 85,
+  "confusion": {
+    "small_small": 44,
+    "small_large": 6,
+    "large_small": 0,
+    "large_large": 35
+  },
+  "escalation_rate_pct": 0.0,
+  "paraphrase_hit_rate_pct": 66.7,
+  "cache_false_hit_rate_pct": 0.0,
+  "unexpected_cache_hits": 0,
+  "median_latency_s": {
+    "cache": 0.015,
+    "small": 0.222,
+    "large": 1.57,
+    "small+large": null
+  },
+  "measured": 48,
+  "estimated": 52,
+  "tiers": {
+    "small": 48,
+    "large": 42,
+    "cache": 10
+  },
+  "judge_models": [
+    "gemini-3.5-flash-lite"
+  ],
+  "handcheck": "pending: see results/judge_handcheck.csv",
+  "method": "100 questions (40 easy, 35 hard, 15 paraphrases, 10 cache traps) were each sent straight to the large model (openai/gpt-oss-120b) as the baseline, then through GreenPrompt with an empty cache, in file order. Local answers are measured as GPU power above idle; cloud answers use published per-prompt estimates. Where GreenPrompt did not use the large model, gemini-3.5-flash-lite compared its answer with the baseline answer, in random order, as better, same or worse, and said blind whether each answer was correct and adequate. Quality retained is the share of those judged answers rated same or better. Answers the large model gave itself were not judged.",
+  "limitations": [
+    "Questions and labels were drafted with an LLM; team members are checking them by hand.",
+    "Cloud energy is an estimate (Google 2025 median prompt, range x0.5 to x2), not a measurement.",
+    "Local energy counts the GPU only, not CPU, RAM or cooling.",
+    "An LLM judge can be wrong; a 15-question hand check is in progress.",
+    "Router weights were lightly tuned after looking at this set (C chosen by cross-validation on training data, 15 training rows added), so router accuracy here is not fully unseen."
+  ]
+}

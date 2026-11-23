@@ -1,0 +1,98 @@
+id,prompt,greenprompt_answer,baseline_answer,judge_verdict,judge_reason,your_verdict,agree
+14,What is the speed of light in a vacuum?,"The speed of light in a vacuum is approximately 299,792,458 meters per second.","The speed of light in a vacuum is **299,792,458 m/s**.",same,Both answers provide the exact correct speed of light and adequately answer the question.,,
+1,What is normalization in DBMS?,"Normalization in DBMS is a process used to eliminate redundancy and dependency in a database by dividing it into several related databases or tables. The goal is to create a database that is efficient and can be easily maintained. Normalization is achieved through a series of steps called normal forms, starting from 1NF, moving to 2NF, 3NF, and so on. Each step aims to resolve certain flaws in the database structure.","**Normalization** is a systematic process used in relational database design to organize data so that:
+
+1. **Redundancy is minimized** – the same piece of information isn’t stored in multiple places.
+2. **Data integrity is maintained** – updates, deletions, and insertions affect only the intended rows.
+3. **Logical relationships are clear** – tables are structured around single concepts or entities.
+
+The process proceeds through a series of **normal forms** (NF), each adding stricter rules:
+
+| Normal Form | Main Requirement | Typical Result |
+|------------|------------------|----------------|
+| **1NF (First Normal Form)** | Each column contains atomic (indivisible) values; no repeating groups. | One value per cell; each row uniquely identifiable (primary key). |
+| **2NF (Second Normal Form)** | Must be in 1NF and every non‑key attribute fully functionally dependent on the whole primary key (no partial dependencies). | Separate tables for data that depend only on part of a composite key. |
+| **3NF (Third Normal Form)** | Must be in 2NF and no transitive dependencies (non‑key attributes depending on other non‑key attributes). | Move derived or indirect information to its own table. |
+| **BCNF (Boyce‑Codd NF)** | A stricter version of 3NF: every determinant must be a candidate key. | Eliminates anomalies where a non‑key attribute determines a key. |
+| **4NF (Fourth Normal Form)** | Must be in BCNF and have no multi‑valued dependencies. | Handles cases where a row can have multiple independent repeating groups. |
+| **5NF (Fifth Normal Form)** | Must be in 4NF and be free of join‑dependency anomalies. | Decomposes tables only when necessary to reconstruct original data via joins. |
+
+### Why Normalize?
+- **Avoid update anomalies**: Changing a value once updates it everywhere.
+- **Avoid insert/delete anomalies**: New data can be added without leaving “orphan” records; deletions don’t unintentionally erase needed information.
+- **Improve query performance** (often) by reducing the amount of data scanned.
+- **Make the schema easier to understand and maintain.**
+
+### Trade‑offs
+- Excessive normalization can lead to many small tables, requiring many joins in queries, which may affect performance.
+- In practice, designers often stop at 3NF or BCNF and then selectively denormalize for performance-critical reports.
+
+In short, normalization is the disciplined way of structuring relational tables to store each fact once, enforce logical dependencies, and keep the database clean, consistent, and flexible.",worse,"Answer A is far more comprehensive, structured, and accurate regarding normal forms and trade-offs.",,
+37,Write a short thank-you note to a teacher.,"Sure! Here's a short thank-you note to a teacher:
+
+Dear [Teacher's Name],
+
+Thank you so much for all your hard work and support this year. Your classes were always engaging and fun, and I feel much more prepared for my future studies.
+
+Warmest regards,
+
+[Your Name]","Dear [Teacher’s Name],
+
+Thank you for your patience, encouragement, and dedication. Your lessons have inspired me to keep learning and growing, and I truly appreciate all the effort you put into helping us succeed. 
+
+With gratitude,  
+[Your Name]",same,"Both provide appropriate, polite, and well-written thank-you notes that directly answer the prompt without conversational filler.",,
+88,Which is the largest planet in the solar system?,The largest planet in our solar system is Jupiter.,Jupiter is the largest planet in our solar system.,same,Both answers are factually correct and directly answer the question with equal clarity.,,
+3,What is 15% of 800?,"To find 15% of 800, first convert the percentage to a decimal by dividing by 100, so 15% becomes 0.15. Then multiply this decimal by 800.
+
+0.15 * 800 = 120
+
+So, 15% of 800 is 120.",15 % of 800 is 120.,same,"Both answers are completely correct and provide the right result, differing only in the level of explanation provided.",,
+11,What is a computer virus?,"A computer virus is a type of malicious software program that can replicate itself and infect a computer. It typically spreads from one computer to another through networks or email attachments. Once activated, it can cause damage to the computer's system files or data, slow down performance, and display annoying messages. Computer viruses can be benign or cause significant harm, depending on their programming and intentions.","A computer virus is a type of malicious software (malware) that can copy itself and spread from one computer to another. It typically attaches itself to legitimate programs or files, and when those programs are run or the infected files are opened, the virus activates. Once active, it can perform a variety of unwanted actions, such as:
+
+- Corrupting or deleting data
+- Stealing personal information
+- Slowing down the system
+- Displaying unwanted messages or ads
+- Installing additional malware
+
+Viruses rely on user actions (like opening an infected email attachment or downloading a compromised file) or on exploiting software vulnerabilities to propagate. Their primary characteristic is self‑replication, which distinguishes them from other malware that may not copy themselves.",worse,"Answer B is more comprehensive, accurately explaining the mechanism of infection and distinguishing viruses from other malware.",,
+16,What is 12 multiplied by 15?,12 multiplied by 15 is 180.,12 multiplied by 15 equals 180.,same,Both answers are factually correct and directly answer the question with the same information.,,
+2,Define photosynthesis.,"Photosynthesis is the process by which plants, algae, and some bacteria produce food using sunlight, water, and carbon dioxide. Oxygen is released as a byproduct. The main equation is 6CO2 + 6H2O + light energy → C6H12O6 + 6O2, where CO2 is carbon dioxide, H2O is water, C6H12O6 is glucose, and O2 is oxygen.","Photosynthesis is the process by which green plants, algae, and some bacteria convert light energy—usually from the sun—into chemical energy stored in sugar molecules. During photosynthesis, these organisms take in carbon dioxide (CO₂) from the air and water (H₂O) from the soil, use light energy captured by the pigment chlorophyll (or other pigments in non‑green organisms), and produce glucose (C₆H₁₂O₆) and oxygen (O₂) as by‑products. The overall simplified reaction can be written as:
+
+6 CO₂ + 6 H₂O + light energy → C₆H₁₂O₆ + 6 O₂
+
+In short, photosynthesis transforms inorganic carbon and water into organic food and releases oxygen, providing the energy base for most life on Earth.",same,"Both answers are scientifically accurate, complete, and effectively define photosynthesis with its chemical equation.",,
+4,What is the capital of Australia?,The capital of Australia is Canberra.,The capital of Australia is **Canberra**.,same,"Both answers are factually correct and directly answer the question accurately, differing only in markdown bolding.",,
+84,Who is called the father of computers?,Charles Babbage is known as the father of computers.,"The person most often called the “father of computers” is **Charles Babbage**. He designed the first mechanical, programmable computers—the Difference Engine and later the Analytical Engine—in the 19th century.",same,"Both correctly identify Charles Babbage as the father of computers, adequately answering the simple question.",,
+10,What is an operating system?,"An operating system (OS) is a software system that manages computer hardware and software resources, providing common services for computer programs. It acts as an intermediary between the user and the computer hardware, allowing users to interact with their systems in a convenient manner. OSes control hardware and manage software, so applications can run smoothly without needing to know about the underlying hardware or software specifics.","An operating system (OS) is system software that manages a computer’s hardware resources and provides common services for application programs. It acts as an intermediary between users/applications and the physical components of the machine, handling tasks such as:
+
+- **Resource management** – allocating CPU time, memory, storage, and I/O devices.
+- **Process control** – creating, scheduling, and terminating processes or threads.
+- **File system management** – organizing, storing, retrieving, and protecting data on disks.
+- **Device control** – communicating with hardware via drivers and abstracting device details.
+- **User interface** – offering command‑line shells, graphical desktops, or APIs for programs to interact with the system.
+
+In short, the OS enables multiple programs to run efficiently, safely, and conveniently on the same hardware.",same,"Both answers are factually correct, comprehensive, and adequately explain what an operating system is.",,
+85,Explain what a prime number is.,A prime number is a whole number greater than 1 that can only be divided by 1 and itself without leaving a remainder.,"A prime number is a natural number greater than 1 that has no positive divisors other than 1 and itself. In other words, you cannot split a prime number into a product of two smaller natural numbers. For example:
+
+- 2 is prime (its only divisors are 1 and 2)
+- 3 is prime (divisors: 1, 3)
+- 4 is not prime because 4 = 2 × 2
+- 5 is prime (divisors: 1, 5)
+
+So a prime number is “indivisible” except by 1 and the number itself.",same,"Both answers are factually correct, clear, and adequately explain the definition of a prime number.",,
+25,What is GDP?,"GDP stands for Gross Domestic Product. It is a measure of the total value of all goods and services produced within a country's borders in a specific time period, usually a year.","Gross Domestic Product (GDP) is the total monetary value of all finished goods and services produced within a country’s borders over a specific time period (usually a year or a quarter). It is commonly used as a broad measure of a nation’s overall economic activity and health. GDP can be calculated in three main ways, which should all give the same result:
+
+1. **Production (or output) approach** – adds up the value added at each stage of production across all industries.  
+2. **Income approach** – sums all incomes earned by factors of production, including wages, profits, rents, and taxes minus subsidies.  
+3. **Expenditure approach** – adds up all spending on final goods and services:  
+
+   `GDP = Consumption + Investment + Government Spending + (Exports – Imports)`
+
+Key points:
+- **Nominal vs. Real GDP:** Nominal GDP uses current market prices, while real GDP adjusts for inflation to reflect the true volume of production.
+- **GDP per capita:** GDP divided by the population, giving an average economic output per person and often used to compare living standards across countries.
+- **Limitations:** GDP does not account for informal economic activity, income distribution, environmental degradation, or non‑market services like household labor. It is a useful indicator, but not a complete measure of welfare or quality of life.",worse,Answer A is correct and provides a much more comprehensive and helpful explanation of GDP.,,
+93,What is 13 multiplied by 15?,13 multiplied by 15 is 195.,13 multiplied by 15 equals 195.,same,Both answers correctly calculate 13 multiplied by 15 as 195.,,
+8,What is the boiling point of water in Fahrenheit?,The boiling point of water in Fahrenheit is 212°F.,The boiling point of water at standard atmospheric pressure (1 atm) is **212 °F**.,same,Both answers correctly state the boiling point of water in Fahrenheit as 212°F.,,
