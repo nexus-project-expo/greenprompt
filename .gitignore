@@ -9,3 +9,8 @@ results/*.csv
 !results/.gitkeep
 .streamlit/secrets.toml
 .DS_Store
+web/node_modules/
+web/.next/
+web/out/
+web/next-env.d.ts
+web/*.tsbuildinfo
