@@ -46,7 +46,7 @@ def handle_prompt(prompt: str, history: list[dict] | None = None, accuracy_mode:
     except Exception as e:  # last line of defence: the UI must never see a traceback
         log.exception("handle_prompt failed")
         r = energy.compute_receipt("error", [], 0.0, time.perf_counter() - t0)
-        return "Something went wrong on our side. Please try again.", r, None, {"error": f"{type(e).__name__}: {e}"}
+        return "Something went wrong on our side. Please try again.", r, None, {"error": "internal"}
 
 
 def _handle(prompt: str, history: list[dict], accuracy_mode: bool, t0: float):
@@ -103,7 +103,9 @@ def _handle(prompt: str, history: list[dict], accuracy_mode: bool, t0: float):
     receipt = energy.compute_receipt(tier, calls, overhead_s, time.perf_counter() - t0 - tail[0],
                                      model=r.model if ok else "", power_trace=trace)
     answer = r.text if ok else NO_MODEL_MSG
-    info["error"] = None if ok else r.error
+    info["error"] = None if ok else "no_model"
+    if not ok:
+        log.warning("no model answered: %s", r.error)  # provider details stay in the server log
     if ok and cacheable:
         cache.store(prompt, answer, r.model)
     store.log_request(prompt, receipt, decision.p_hard, cache_hit=False, ok=ok)

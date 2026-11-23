@@ -102,7 +102,7 @@ def test_everything_down_gives_friendly_message(setup):
     replies["small"] = result("small", ok=False)
     replies["large"] = result("large", ok=False)
     answer, r, d, info = pipeline.handle_prompt("What is a firewall?")
-    assert answer == pipeline.NO_MODEL_MSG and info["error"] and r.wh < 0.001
+    assert answer == pipeline.NO_MODEL_MSG and info["error"] == "no_model" and r.wh < 0.001
     assert store.stats()["requests"] == 0  # failed requests do not count in the dashboard
     # and nothing was cached
     replies.clear()
@@ -110,12 +110,13 @@ def test_everything_down_gives_friendly_message(setup):
     assert not i2["hit"]
 
 
-def test_unexpected_exception_never_escapes(setup, monkeypatch):
+def test_unexpected_exception_never_escapes(setup, monkeypatch, caplog):
     def boom(*a, **k):
         raise RuntimeError("disk on fire")
     monkeypatch.setattr(pipeline, "_handle", boom)
     answer, r, d, info = pipeline.handle_prompt("anything")
-    assert "went wrong" in answer and "disk on fire" in info["error"] and d is None
+    assert "went wrong" in answer and info["error"] == "internal" and d is None
+    assert "disk on fire" in caplog.text  # details are logged, not returned
 
 
 def test_followup_with_history_is_not_cached(setup):
