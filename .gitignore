@@ -7,6 +7,5 @@ venv/
 *.db
 results/*.csv
 !results/.gitkeep
-data/router.joblib
 .streamlit/secrets.toml
 .DS_Store
