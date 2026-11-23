@@ -76,8 +76,8 @@ class Sampler:
         return sum(max(0.0, w - idle) * (t2 - t1) for (t1, w), (t2, _) in zip(s, s[1:]))
 
 
-def ask(q: str):
-    return models.call(config.OLLAMA, "small", [{"role": "user", "content": q}], retries=0)
+def ask(q: str, timeout: float | None = None):
+    return models.call(config.OLLAMA, "small", [{"role": "user", "content": q}], retries=0, timeout=timeout)
 
 
 def main() -> int:
@@ -86,8 +86,9 @@ def main() -> int:
     res["gpu"] = gpu
     print("GPU:", gpu)
 
-    print("Warm-up call (loads the model, can take ~30 s the first time)...")
-    w = ask("Say OK.")
+    print("Warm-up call (loads the model into VRAM; the first load can take a minute or more)...")
+    w = ask("Say OK.", timeout=180)
+    print(f"  warm-up took {w.latency_s:.1f} s")
     if not w.ok:
         print("FAIL: Ollama did not answer:", w.error)
         print("Is Ollama running and the model pulled?  ollama pull", config.OLLAMA.model)

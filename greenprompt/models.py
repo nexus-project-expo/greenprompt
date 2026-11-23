@@ -37,14 +37,17 @@ def _client(ep: Endpoint) -> OpenAI:
     return _clients[ep]
 
 
-def call(ep: Endpoint, tier: str, messages: list[dict], retries: int = 1) -> ModelResult:
-    """One endpoint, with `retries` retries. Returns ok=False instead of raising."""
+def call(ep: Endpoint, tier: str, messages: list[dict], retries: int = 1,
+         timeout: float | None = None) -> ModelResult:
+    """One endpoint, with `retries` retries. Returns ok=False instead of raising.
+    `timeout` overrides the config timeout, e.g. for warm-up while a local model loads."""
     extra = {"reasoning_effort": "low"} if ep.model.startswith("openai/gpt-oss") else {}
+    client = _client(ep) if timeout is None else _client(ep).with_options(timeout=timeout)
     t0 = time.perf_counter()
     err = None
     for attempt in range(retries + 1):
         try:
-            r = _client(ep).chat.completions.create(model=ep.model, messages=messages, **extra)
+            r = client.chat.completions.create(model=ep.model, messages=messages, **extra)
             text = (r.choices[0].message.content or "").strip()
             u = r.usage
             pt, ct = (u.prompt_tokens, u.completion_tokens) if u else (None, None)
