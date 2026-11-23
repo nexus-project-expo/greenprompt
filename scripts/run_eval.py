@@ -202,7 +202,7 @@ def summarise(qs, state) -> dict:
     judged = [r for r in rows if r["verdict"] in ("same", "better", "worse")]
     retained = [r for r in rows if r["verdict"] in ("same", "better", "large model")]
     counted = [r for r in rows if r["verdict"] != "unjudged"]
-    correct = [r for r in rows if r["verdict"] == "large model" or r["gp_ok"]]
+    cats = collections.Counter(r["category"].split("_")[0] for r in rows)  # easy, hard, paraphrase, trap
 
     routed = [r for r in rows if r["routed"] and r["expected_tier"] in ("small", "large")]
     conf = {f"{e}_{g}": sum(r["expected_tier"] == e and r["routed"] == g for r in routed)
@@ -223,11 +223,13 @@ def summarise(qs, state) -> dict:
         "run_at": datetime.now().strftime("%d %b %Y, %H:%M"),
         "energy_saved_pct": round(100 * (1 - gp_wh / base_wh), 1) if base_wh else 0,
         "gp_wh": round(gp_wh, 4), "baseline_wh": round(base_wh, 4),
-        "quality_retained_pct": round(100 * len(retained) / len(counted), 1) if counted else 0,
-        "quality_retained_judged_pct": round(100 * sum(r["verdict"] in ("same", "better") for r in judged) / len(judged), 1)
+        # Headline figures cover only the answers that were judged (those not from the large model).
+        "quality_retained_pct": round(100 * sum(r["verdict"] in ("same", "better") for r in judged) / len(judged), 1)
         if judged else 0,
-        "answers_correct_pct": round(100 * len(correct) / len(counted), 1) if counted else 0,
-        "judged": len(judged), "verdicts": dict(verdicts),
+        "answers_correct_pct": round(100 * sum(r["gp_ok"] for r in judged) / len(judged), 1) if judged else 0,
+        "quality_retained_incl_large_pct": round(100 * len(retained) / len(counted), 1) if counted else 0,
+        "judged": len(judged), "unjudged": verdicts.get("unjudged", 0), "verdicts": dict(verdicts),
+        "trap_count": len(traps), "paraphrase_count": len(para),
         "router_accuracy_pct": round(100 * (conf["small_small"] + conf["large_large"]) / len(routed), 1) if routed else 0,
         "router_n": len(routed), "confusion": conf,
         "escalation_rate_pct": round(100 * sum(r["escalated"] for r in small_routed) / len(small_routed), 1)
@@ -241,12 +243,14 @@ def summarise(qs, state) -> dict:
         "judge_models": judge_models,
         "handcheck": "pending: see results/judge_handcheck.csv",
         "method": (
-            f"{n} questions (40 easy, 35 hard, 15 paraphrases, 10 cache traps) were each sent straight to the large "
+            f"{n} questions ({cats['easy']} easy, {cats['hard']} hard, {cats['paraphrase']} paraphrases, "
+            f"{cats['trap']} cache traps) were each sent straight to the large "
             f"model ({config.LARGE.model}) as the baseline, then through GreenPrompt with an empty cache, in file order. "
             "Local answers are measured as GPU power above idle; cloud answers use published per-prompt estimates. "
             f"Where GreenPrompt did not use the large model, {', '.join(judge_models) or 'a judge model'} compared its "
             "answer with the baseline answer, in random order, as better, same or worse, and said blind whether each answer was correct and adequate. "
-            "Quality retained is the share judged same or better; answers from the large model count as retained."),
+            "Quality retained is the share of those judged answers rated same or better. Answers the large model "
+            "gave itself were not judged."),
         "limitations": [
             "Questions and labels were drafted with an LLM; team members are checking them by hand.",
             "Cloud energy is an estimate (Google 2025 median prompt, range x0.5 to x2), not a measurement.",
@@ -280,20 +284,29 @@ def main():
     run_judge(qs, state)
 
     summary, rows = summarise(qs, state)
+    show = {k: v for k, v in summary.items() if k not in ("method", "limitations")}
+    if args.limit:  # a smoke test must never replace the real results the UI shows
+        (RES / "eval_summary_partial.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
+        print(json.dumps(show, indent=2), "\n(partial run: written to eval_summary_partial.json only)")
+        return
     (RES / "eval_summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
     with open(RES / "eval_rows.csv", "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
         w.writeheader()
         w.writerows(rows)
-    judged = [r for r in rows if r["verdict"] in ("same", "better", "worse")]
-    pick = random.Random(15).sample(judged, min(15, len(judged)))
-    with open(RES / "judge_handcheck.csv", "w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f)
-        w.writerow(["id", "prompt", "greenprompt_answer", "baseline_answer", "judge_verdict", "judge_reason",
-                    "your_verdict", "agree"])
-        for r in pick:
-            w.writerow([r["id"], r["prompt"], r["answer"], r["baseline_answer"], r["verdict"], r["judge_reason"], "", ""])
-    show = {k: v for k, v in summary.items() if k not in ("method", "limitations")}
+    handcheck = RES / "judge_handcheck.csv"
+    if handcheck.exists():  # never overwrite the team's hand grading
+        print(f"{handcheck.name} exists, left unchanged (delete it to draw a new sample)")
+    else:
+        judged = [r for r in rows if r["verdict"] in ("same", "better", "worse")]
+        pick = random.Random(15).sample(judged, min(15, len(judged)))
+        with open(handcheck, "w", newline="", encoding="utf-8") as f:
+            w = csv.writer(f)
+            w.writerow(["id", "prompt", "greenprompt_answer", "baseline_answer", "judge_verdict", "judge_reason",
+                        "your_verdict", "agree"])
+            for r in pick:
+                w.writerow([r["id"], r["prompt"], r["answer"], r["baseline_answer"], r["verdict"], r["judge_reason"],
+                            "", ""])
     print(json.dumps(show, indent=2))
 
 

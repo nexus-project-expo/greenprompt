@@ -8,6 +8,9 @@ export type EvalSummary = {
   baseline_wh: number;
   quality_retained_pct: number;
   answers_correct_pct: number;
+  quality_retained_incl_large_pct: number;
+  unjudged: number;
+  trap_count: number;
   judged: number;
   verdicts: Record<string, number>;
   router_accuracy_pct: number;
@@ -45,7 +48,7 @@ export default function Evaluation({ data }: { data: EvalSummary | { error: stri
         <div className="tile">
           <span className="t-label">Quality retained</span>
           <span className="t-num">{pct(data.quality_retained_pct)}</span>
-          <span className="t-sub">as good as the large model; {pct(data.answers_correct_pct)} correct</span>
+          <span className="t-sub">of {data.judged} judged answers; {pct(data.answers_correct_pct)} judged correct</span>
         </div>
         <div className="tile">
           <span className="t-label">Router accuracy</span>
@@ -55,12 +58,12 @@ export default function Evaluation({ data }: { data: EvalSummary | { error: stri
         <div className="tile">
           <span className="t-label">Cache false hits</span>
           <span className={`t-num${data.cache_false_hit_rate_pct === 0 ? " good" : ""}`}>{pct(data.cache_false_hit_rate_pct)}</span>
-          <span className="t-sub">on 10 traps; {pct(data.paraphrase_hit_rate_pct)} of paraphrases hit</span>
+          <span className="t-sub">on {data.trap_count} traps; {pct(data.paraphrase_hit_rate_pct)} of paraphrases hit</span>
         </div>
       </section>
       <p className="note">
         {data.n} questions. {data.judged} answers not from the large model were judged by {data.judge_models.join(", ")}:{" "}
-        {v.better ?? 0} better, {v.same ?? 0} same, {v.worse ?? 0} worse. {data.measured} receipts measured on the GPU,{" "}
+        {v.better ?? 0} better, {v.same ?? 0} same, {v.worse ?? 0} worse{data.unjudged ? `, ${data.unjudged} not judged` : ""}. Counting the large model's own answers as retained gives {pct(data.quality_retained_incl_large_pct)}. {data.measured} receipts measured on the GPU,{" "}
         {data.estimated} estimated.
       </p>
       <section className="charts">
