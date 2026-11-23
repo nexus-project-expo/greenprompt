@@ -26,4 +26,4 @@ if ($busy) { Write-Host "Close these first for clean GPU readings: $($busy.Name 
 
 Start-Job { Start-Sleep 4; Start-Process "http://localhost:8000" } | Out-Null
 Write-Host "Starting GreenPrompt on http://localhost:8000 (Ctrl+C to stop)"
-& "$root\.venv\Scripts\python.exe" -m uvicorn server:app --port 8000
+& "$root\.venv\Scripts\python.exe" -m uvicorn server:app --port 8000 --timeout-graceful-shutdown 2
