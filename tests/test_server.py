@@ -55,6 +55,51 @@ def test_status_has_pills(client):
     assert {"local_model", "cloud", "grid", "gpu_busy", "warm"} <= j.keys()
 
 
+def test_bad_body_is_json_error(client):
+    c, _ = client
+    assert c.post("/api/chat", json={"nope": 1}).json() == {"error": "bad_request"}
+    r = c.post("/v1/chat/completions", json={"messages": "x"})
+    assert r.status_code == 400 and r.json()["error"]["type"] == "invalid_request_error"
+
+
+def _sdk(c):
+    from openai import OpenAI
+    return OpenAI(base_url="http://testserver/v1", api_key="any", http_client=c)
+
+
+def test_proxy_works_with_openai_sdk(client):
+    c, seen = client
+    r = _sdk(c).chat.completions.create(model="greenprompt", messages=[
+        {"role": "system", "content": "be brief"}, {"role": "user", "content": [{"type": "text", "text": "What is a firewall?"}]}])
+    assert r.choices[0].message.content == "an answer" and not seen["accuracy_mode"]
+    extra = r.model_extra["greenprompt"]
+    assert extra["tier"] == "small" and "wh" in extra
+    raw = c.post("/v1/chat/completions", json={"messages": [{"role": "user", "content": "hi"}]}).text
+    assert "matched_prompt" not in raw and "entry_id" not in raw
+
+
+def test_proxy_accurate_model_and_streaming(client):
+    c, seen = client
+    chunks = list(_sdk(c).chat.completions.create(model="greenprompt-accurate", stream=True,
+                                                   messages=[{"role": "user", "content": "Prove it"}]))
+    assert seen["accuracy_mode"]
+    assert "".join(ch.choices[0].delta.content or "" for ch in chunks) == "an answer"
+    assert chunks[-1].choices[0].finish_reason == "stop"
+
+
+def test_proxy_errors_are_openai_shaped(client, monkeypatch):
+    c, _ = client
+    r = c.post("/v1/chat/completions", json={"messages": [{"role": "assistant", "content": "hi"}]})
+    assert r.status_code == 400 and "user message" in r.json()["error"]["message"]
+
+    def down(prompt, history, accuracy_mode):
+        r = server.energy.compute_receipt("small", [], 0.0, 0.1)
+        return "x", r, None, {"hit": False, "error": "no_model"}
+    monkeypatch.setattr(server.pipeline, "handle_prompt", down)
+    r = c.post("/v1/chat/completions", json={"messages": [{"role": "user", "content": "hi"}]})
+    assert r.status_code == 503 and r.json()["error"]["type"] == "server_error"
+
+
 def test_eval_not_run(client, monkeypatch, tmp_path):
     c, _ = client
     monkeypatch.setattr(server.config, "RESULTS_DIR", tmp_path)

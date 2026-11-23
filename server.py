@@ -10,6 +10,7 @@ from contextlib import asynccontextmanager
 from urllib.parse import urlparse
 
 from fastapi import FastAPI, Request
+from fastapi.exceptions import RequestValidationError
 from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -43,7 +44,17 @@ app = FastAPI(title="GreenPrompt", docs_url=None, redoc_url=None, lifespan=lifes
 @app.exception_handler(Exception)
 async def on_error(request: Request, exc: Exception):
     log.exception("unhandled error on %s", request.url.path)
+    if request.url.path.startswith("/v1/"):
+        return JSONResponse({"error": {"message": "internal error", "type": "server_error"}}, status_code=500)
     return JSONResponse({"error": "internal"}, status_code=200)
+
+
+@app.exception_handler(RequestValidationError)
+async def on_bad_request(request: Request, exc: RequestValidationError):
+    if request.url.path.startswith("/v1/"):
+        return JSONResponse({"error": {"message": "Malformed request body.", "type": "invalid_request_error"}},
+                            status_code=400)
+    return JSONResponse({"error": "bad_request"}, status_code=200)
 
 
 class ChatIn(BaseModel):
@@ -146,6 +157,71 @@ async def power_stream(request: Request):
             yield f"data: {json.dumps({'w': w, 'active': s is not None, 'idle': energy.IDLE_W})}\n\n"
             await asyncio.sleep(0.2)
     return StreamingResponse(events(), media_type="text/event-stream", headers={"Cache-Control": "no-cache"})
+
+
+# ---------- OpenAI-compatible proxy ----------
+# Any OpenAI client works: base_url="http://localhost:8000/v1", any api_key, model "greenprompt"
+# ("greenprompt-accurate" forces the large model). Cache internals (matched prompts, ids) are never returned here.
+
+class ChatCompletionIn(BaseModel):
+    model: str = "greenprompt"
+    messages: list[dict]
+    stream: bool = False
+
+
+def _text(content) -> str:
+    if isinstance(content, str):
+        return content
+    if isinstance(content, list):  # [{"type": "text", "text": ...}, ...]
+        return " ".join(p.get("text", "") for p in content if isinstance(p, dict) and p.get("type") == "text")
+    return ""
+
+
+def _oai_error(message: str, status: int, kind: str = "invalid_request_error"):
+    return JSONResponse({"error": {"message": message, "type": kind}}, status_code=status)
+
+
+@app.get("/v1/models")
+def list_models():
+    return {"object": "list", "data": [{"id": m, "object": "model", "owned_by": "greenprompt"}
+                                       for m in ("greenprompt", "greenprompt-accurate")]}
+
+
+@app.post("/v1/chat/completions")
+def chat_completions(body: ChatCompletionIn):
+    msgs = [{"role": m.get("role"), "content": _text(m.get("content"))} for m in body.messages]
+    if not msgs or msgs[-1]["role"] != "user" or not msgs[-1]["content"].strip():
+        return _oai_error("The last message must be a non-empty user message.", 400)
+    prompt = msgs[-1]["content"].strip()[:4000]
+    history = [m for m in msgs[:-1] if m["role"] in ("user", "assistant")][-6:] if followup_reason(prompt) else []
+    with _lock:
+        answer, r, d, info = pipeline.handle_prompt(prompt, history, body.model.endswith("accurate"))
+    if info.get("error"):
+        return _oai_error(ERROR_TEXT.get(info["error"], "internal error"), 503, "server_error")
+    cid, created = f"chatcmpl-gp{int(time.time() * 1000)}", int(time.time())
+    model = r.model or "greenprompt-cache"
+    receipt = {"tier": r.tier, "wh": r.wh, "wh_low": r.wh_low, "wh_high": r.wh_high, "measured": r.measured,
+               "g_co2": r.g_co2, "ml_water": r.ml_water, "baseline_wh": r.baseline_wh, "saved_pct": r.saved_pct,
+               "latency_s": r.latency_s, "cache_hit": info["hit"], "reasons": d.reasons if d else ["cache hit"]}
+    if body.stream:
+        def events():
+            base = {"id": cid, "object": "chat.completion.chunk", "created": created, "model": model}
+            yield f"data: {json.dumps({**base, 'choices': [{'index': 0, 'delta': {'role': 'assistant', 'content': answer}, 'finish_reason': None}]})}\n\n"
+            yield f"data: {json.dumps({**base, 'choices': [{'index': 0, 'delta': {}, 'finish_reason': 'stop'}], 'greenprompt': receipt})}\n\n"
+            yield "data: [DONE]\n\n"
+        return StreamingResponse(events(), media_type="text/event-stream")
+    pt = sum(len(m["content"]) for m in msgs) // 4  # shortcut: chars/4 token estimate, fine for a usage field
+    ct = len(answer) // 4
+    return {
+        "id": cid, "object": "chat.completion", "created": created, "model": model,
+        "choices": [{"index": 0, "message": {"role": "assistant", "content": answer}, "finish_reason": "stop"}],
+        "usage": {"prompt_tokens": pt, "completion_tokens": ct, "total_tokens": pt + ct},
+        "greenprompt": receipt,
+    }
+
+
+ERROR_TEXT = {"no_model": "No model could answer right now. Check the internet connection or Ollama.",
+              "internal": "internal error"}
 
 
 UI = config.ROOT / "web" / "out"
