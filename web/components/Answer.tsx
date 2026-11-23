@@ -51,8 +51,13 @@ export default function Answer({ text: raw }: { text: string }) {
         return;
       }
       flush(k + "f");
-      const h = p.match(/^#{1,6}\s+(.*)/);
-      blocks.push(h ? <h4 key={k}>{inline(h[1])}</h4> : <p key={k}>{inline(p)}</p>);
+      const h = p.match(/^#{1,6}\s+(.*)(?:\n([\s\S]*))?/);
+      if (!h) {
+        blocks.push(<p key={k}>{inline(p)}</p>);
+        return;
+      }
+      blocks.push(<h4 key={k}>{inline(h[1])}</h4>);
+      if (h[2]?.trim()) blocks.push(<p key={`${k}b`}>{inline(h[2].trim())}</p>); // text right under the heading
     });
     flush(`${i}-end`);
   });
