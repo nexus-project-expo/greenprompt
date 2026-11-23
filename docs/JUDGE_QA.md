@@ -15,7 +15,7 @@ Source: 29 questions Pallavi collected. Sorted by what we do about them. Every t
 | 10 | Small model is wrong but confident? | Escalation on refusals, uncertainty, empty/very short answers, and an unsure band that defaults to the large model. Honest limit: no system can verify correctness without a stronger model, so we report measured quality retained on 100 questions. |
 | 11 | Cloud model unavailable? | Timeout, one retry, then fallback to the other model with a visible note. Cache and local model keep working offline. |
 | 14 | User wants the most accurate answer? | Accuracy-mode toggle always uses the large model. |
-| 15 | Router makes the wrong decision? | We report router accuracy and the confusion split on a held-out set. Errors toward the large model only waste energy; errors toward the small model are caught partly by escalation. |
+| 15 | Router makes the wrong decision? | We report router accuracy and the confusion split on a separate 100-question set (disjoint from training, checked by script; we did add a few training rows after a first look, and we say so). Errors toward the large model only waste energy; errors toward the small model are caught partly by escalation. |
 | 16 | Local GPU uses more electricity than the cloud? | Could be true for long answers. That's why we measure the local side instead of assuming, and route accordingly. See ENERGY_METHODOLOGY section 7. |
 | 18 | Energy of cache, embeddings, classifier ignored? | Counted on every receipt, including cache hits. It's tiny compared with an LLM call. |
 | 20 | Renewable vs coal electricity? | Energy (Wh) and CO2 are shown separately. CO2 uses India's CEA grid factor; cloud location unknown is labelled. |
