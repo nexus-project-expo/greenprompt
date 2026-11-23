@@ -26,7 +26,8 @@ _lock = threading.Lock()  # one request at a time, so power measurements never o
 
 def _warm():
     try:
-        STATUS.update(pipeline.warm_up(), warm="ready")
+        with _lock:  # a request during warm-up would be counted as idle GPU power
+            STATUS.update(pipeline.warm_up(), warm="ready")
     except Exception:
         log.exception("warm-up failed")
         STATUS["warm"] = "failed"
@@ -132,8 +133,12 @@ def _down(ep) -> bool:
 def status():
     local = None
     if config.SMALL_BACKEND == "ollama":
-        local = "offline" if STATUS.get("local_model") == "offline" or _down(config.OLLAMA) else (
-            "starting" if STATUS["warm"] == "starting" else "online")
+        if STATUS["warm"] == "starting":
+            local = "starting"
+        elif STATUS["warm"] == "failed" or STATUS.get("local_model") == "offline" or _down(config.OLLAMA):
+            local = "offline"
+        else:
+            local = "online"
     return {
         "warm": STATUS["warm"],
         "local_model": local,
@@ -193,7 +198,11 @@ def chat_completions(body: ChatCompletionIn):
     if not msgs or msgs[-1]["role"] != "user" or not msgs[-1]["content"].strip():
         return _oai_error("The last message must be a non-empty user message.", 400)
     prompt = msgs[-1]["content"].strip()[:4000]
-    history = [m for m in msgs[:-1] if m["role"] in ("user", "assistant")][-6:] if followup_reason(prompt) else []
+    # A client's own system prompt is passed on; it also makes the request uncacheable, since an answer
+    # written for one system prompt must not be served to another.
+    system = [m for m in msgs[:-1] if m["role"] == "system" and m["content"].strip()]
+    convo = [m for m in msgs[:-1] if m["role"] in ("user", "assistant")][-6:] if followup_reason(prompt) else []
+    history = system + convo
     with _lock:
         answer, r, d, info = pipeline.handle_prompt(prompt, history, body.model.endswith("accurate"))
     if info.get("error"):

@@ -78,6 +78,20 @@ def test_proxy_works_with_openai_sdk(client):
     assert "matched_prompt" not in raw and "entry_id" not in raw
 
 
+def test_proxy_passes_system_prompt_so_it_is_not_cached(client):
+    c, seen = client
+    c.post("/v1/chat/completions", json={"messages": [{"role": "system", "content": "Talk like a pirate."},
+                                                      {"role": "user", "content": "What is a firewall?"}]})
+    assert seen["history"] == [{"role": "system", "content": "Talk like a pirate."}]
+
+
+def test_failed_warm_up_shows_local_offline(client, monkeypatch):
+    c, _ = client
+    monkeypatch.setitem(server.STATUS, "warm", "failed")
+    monkeypatch.setattr(server.config, "SMALL_BACKEND", "ollama")
+    assert c.get("/api/status").json()["local_model"] == "offline"
+
+
 def test_proxy_accurate_model_and_streaming(client):
     c, seen = client
     chunks = list(_sdk(c).chat.completions.create(model="greenprompt-accurate", stream=True,
