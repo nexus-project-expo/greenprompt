@@ -1,0 +1,37 @@
+{
+  "_about": "Per-prompt energy and water estimates for cloud models. Local answers are measured, not taken from here. See docs/ENERGY_METHODOLOGY.md. Looked up 23 Nov 2026.",
+  "grid": {
+    "label": "CEA v22.0",
+    "value_in": ".env GRID_EF_G_PER_KWH (675)",
+    "source": "Central Electricity Authority, CO2 Baseline Database for the Indian Power Sector, User Guide Version 22.0 (Aug 2026), Table S: weighted average emission factor FY 2025-26, 0.675 tCO2/MWh",
+    "url": "https://cea.nic.in/api/cdm-report-version/view-pdf/en/82"
+  },
+  "models": {
+    "openai/gpt-oss-120b": {
+      "wh_per_prompt": 0.24, "low": 0.12, "high": 0.48, "ml_water_per_prompt": 0.26,
+      "label": "median prompt, Google 2025",
+      "source": "Elsworth et al. (Google), Measuring the environmental impact of delivering AI at Google scale, arXiv:2508.15734 (2025): median Gemini Apps text prompt 0.24 Wh, 0.26 mL",
+      "notes": "No verified per-prompt figure for gpt-oss-120b as served by Groq (Groq runs on LPUs, not GPUs). Hugging Face measured 1.84-8.31 Wh per query on a whole 8xA100 node with unstated batch size; not representative of a batched production API. Range is x0.5 / x2 as in the methodology."
+    },
+    "gemini-3.5-flash-lite": {
+      "wh_per_prompt": 0.24, "low": 0.12, "high": 0.48, "ml_water_per_prompt": 0.26,
+      "label": "median prompt, Google 2025",
+      "source": "Elsworth et al. (Google), arXiv:2508.15734 (2025): median Gemini Apps text prompt 0.24 Wh, 0.26 mL",
+      "notes": "Google's figure covers Gemini Apps overall, not this model specifically. Range x0.5 / x2."
+    },
+    "openai/gpt-oss-20b": {
+      "wh_per_prompt": 0.06, "low": 0.03, "high": 0.12, "ml_water_per_prompt": 0.065,
+      "label": "est. from Google 2025 x HF 20B/120B ratio",
+      "source": "Google median prompt 0.24 Wh (arXiv:2508.15734) x 0.25, the gpt-oss-20b / gpt-oss-120b energy ratio measured by Hugging Face (Luccioni, The GPT-OSS models are here, Aug 2025: 0.49/1.84, 0.98/3.83, 2.02/8.31 Wh at 25/50/100 output tokens)",
+      "notes": "Ratio is consistent at 0.24-0.27 across output lengths in that study. Only used when the local model is unavailable. Range x0.5 / x2."
+    }
+  },
+  "default": {
+    "large": "openai/gpt-oss-120b",
+    "small": "openai/gpt-oss-20b"
+  },
+  "cpu_overhead": {
+    "label": "CPU time x assumed package power",
+    "source": "Embedding, cache lookup and router are timed; energy = seconds x CPU_ASSUMED_W (15 W assumed package power, set in .env)"
+  }
+}
