@@ -18,3 +18,32 @@ python scripts/train_router.py
 cd web && npm install && npm run build && cd ..
 uvicorn server:app --port 8000   # open http://localhost:8000
 ```
+
+On demo day, `powershell -ExecutionPolicy Bypass -File scripts\start_demo.ps1` does the Ollama, build and server steps in one go. Start it at least five minutes early: Ollama takes about a minute and a half to come up, and the server measures idle GPU power during warm-up.
+
+## Use it from any OpenAI client
+
+```python
+from openai import OpenAI
+
+client = OpenAI(base_url="http://localhost:8000/v1", api_key="unused")
+r = client.chat.completions.create(model="greenprompt", messages=[{"role": "user", "content": "Define osmosis."}])
+print(r.choices[0].message.content)
+print(r.model_extra["greenprompt"])   # tier, Wh, measured or estimated, CO2, water, saved %
+```
+
+`model="greenprompt-accurate"` always uses the large model. Streaming works too.
+
+## Evaluation
+
+```
+python scripts/run_eval.py            # resumable; --fresh reruns the pipeline, --rejudge reruns the judge
+```
+
+It writes `results/eval_summary.json` (shown in the Evaluation tab), `results/eval_rows.csv` with every answer, and `results/judge_handcheck.csv` with 15 judgments for the team to check by hand.
+
+## Tests
+
+```
+pytest -q
+```
