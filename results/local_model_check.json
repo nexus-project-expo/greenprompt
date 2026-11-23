@@ -1,0 +1,37 @@
+{
+  "model": "qwen2.5:3b",
+  "base_url": "http://127.0.0.1:11434/v1",
+  "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU, 6144 MiB",
+  "idle_w": 21.5,
+  "ollama_ps": "NAME          ID              SIZE      PROCESSOR    CONTEXT    RUNNER      UNTIL               \nqwen2.5:3b    357c53fb659c    2.2 GB    100% GPU     4096       llamacpp    29 minutes from now",
+  "median_latency_s": 0.35,
+  "mean_w_during_generation": 70.33,
+  "wh_per_answer_median": 0.00382,
+  "sample_answers": [
+    {
+      "q": "Explain normalization in DBMS in 3 lines.",
+      "a": "Normalization in a DBMS is the process of organizing data to reduce redundancy and improve data consistency, by dividing data into multiple tables based on their dependencies."
+    },
+    {
+      "q": "Rephrase politely: send me the notes now.",
+      "a": "Could you please send me the notes now?"
+    },
+    {
+      "q": "What is the boiling point of water in Celsius?",
+      "a": "The boiling point of water is 100 degrees Celsius at standard atmospheric pressure (1 atmosphere or 101.325 kilopascals), which is the pressure found at sea level."
+    },
+    {
+      "q": "Give two synonyms for 'happy'.",
+      "a": "Two synonyms for the word \"happy\" are:\n\n1. Joyful\n2. Cheerful"
+    },
+    {
+      "q": "What is an IP address?",
+      "a": "An IP (Internet Protocol) address is a numerical label assigned to each device that is connected to a computer network that uses the Internet Protocol for communication. This network is the Internet. IP addresses are used to identify and locate devices on the Internet or other networks.\n\nThere are two main types of IP addresses:\n\n1. **IPv4**: The older version, which uses a 32-bit address space, resulting in a total of 4,294,967,296 possible addresses. IPv4 addresses are typically written as four numbers separated by periods, e.g., 192.168.0.1.\n\n2. **IPv6**: The newer version, which uses a 128-bit address space, resulting in a total of 340,282,366,920,938,463,374,607,431,768,211,456 possible addresses. IPv6 addresses are typically written as eight groups of four hexadecimal digits, separated by colons, e.g., 2001:0db8:85a3:0000:0000:8a2e:0370:7334.\n\nDevices such as computers, smartphones, and servers have an IP address, which is essential for them to communicate over the network. When you access a website, for example, your computer uses the IP address of the server hosting the website to connect to it."
+    }
+  ],
+  "checks": {
+    "runs_on_gpu": true,
+    "fast_enough": true,
+    "power_readable": true
+  }
+}
