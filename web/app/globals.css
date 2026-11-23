@@ -126,7 +126,7 @@ code, pre { font-family: var(--mono); font-size: 0.9em; }
 }
 .receipt-sample { opacity: 0.4; }
 .r-head {
-  display: flex; justify-content: space-between; font-weight: 700; letter-spacing: 0.04em;
+  display: flex; justify-content: space-between; gap: 12px; font-weight: 700; letter-spacing: 0.04em;
   padding-bottom: 8px; margin-bottom: 8px; border-bottom: 1px dashed #b9b6ad;
 }
 .r-row { display: flex; align-items: baseline; }
@@ -158,11 +158,13 @@ code, pre { font-family: var(--mono); font-size: 0.9em; }
 /* ---------- dashboard and evaluation ---------- */
 .empty { color: var(--muted); max-width: 560px; padding-top: 8vh; }
 .dash { display: flex; flex-direction: column; gap: 20px; }
-.tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-.tile {
+/* one band of four figures read together, not four separate cards */
+.tiles {
+  display: grid; grid-template-columns: repeat(4, 1fr);
   background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
-  padding: 16px 20px; display: flex; flex-direction: column; gap: 2px;
 }
+.tile { padding: 18px 24px; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.tile + .tile { border-left: 1px solid var(--line); }
 .t-label { font-size: 14px; color: var(--muted); }
 .t-num { font-family: var(--mono); font-size: 42px; line-height: 1.15; letter-spacing: -0.03em; font-weight: 500; }
 .t-num small { font-size: 18px; letter-spacing: 0; color: var(--muted); }
@@ -170,7 +172,7 @@ code, pre { font-family: var(--mono); font-size: 0.9em; }
 .note { font-size: 13px; color: var(--muted); margin: 0; }
 .charts { display: grid; grid-template-columns: 3fr 2fr; gap: 16px; }
 .panel { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 20px; }
-.panel figcaption { font-size: 14px; font-weight: 600; margin-bottom: 12px; display: flex; justify-content: space-between; gap: 12px; }
+.panel figcaption { font-size: 14px; font-weight: 600; margin-bottom: 12px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; }
 .legend { font-weight: 400; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; }
 .legend i { width: 16px; height: 0; display: inline-block; border-top: 2px solid var(--green); margin-left: 8px; }
 .legend i.k-base { border-top: 2px dashed var(--muted); }
@@ -202,6 +204,11 @@ code, pre { font-family: var(--mono); font-size: 0.9em; }
   .main { padding: 16px; }
   .chat { grid-template-columns: 1fr; height: auto; }
   .tiles { grid-template-columns: repeat(2, 1fr); }
+  .tile:nth-child(3) { border-left: 0; }
+  .tile:nth-child(n + 3) { border-top: 1px solid var(--line); }
+  .t-num { font-size: 32px; }
+  .pills { margin-left: 0; justify-content: flex-start; }
+  .r-val { white-space: normal; }
   .charts { grid-template-columns: 1fr; }
   .app { height: auto; min-height: 100vh; }
 }
