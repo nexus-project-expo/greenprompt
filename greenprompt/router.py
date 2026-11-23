@@ -91,4 +91,19 @@ def escalation_reason(prompt: str, answer: str, ok: bool) -> str | None:
         return "small model unsure"
     if len(prompt.split()) >= 12 and len(answer.split()) < 4:
         return "answer too short for the question"
+    if wrong_language(prompt, answer):
+        return "answer not in the question's language"
     return None
+
+
+ENGLISH_WORDS = {"the", "is", "a", "of", "and", "to", "in", "it", "that", "are", "or", "by", "for", "as", "an",
+                 "which", "from", "this", "with", "on"}
+ASKS_FOR_LANGUAGE = re.compile(r"\b(translat\w*|french|hindi|kannada|tamil|spanish|german|language)\b", re.I)
+
+
+def wrong_language(prompt: str, answer: str) -> bool:
+    """The 3B local model occasionally answers an English question in another language (seen: Portuguese)."""
+    if NON_LATIN.search(prompt) or ASKS_FOR_LANGUAGE.search(prompt) or "```" in answer:
+        return False
+    words = re.findall(r"[a-zA-Z']+", answer.lower())
+    return len(words) >= 12 and sum(w in ENGLISH_WORDS for w in words) / len(words) < 0.03

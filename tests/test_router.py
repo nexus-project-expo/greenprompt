@@ -98,3 +98,16 @@ def test_trained_weights_are_committed_json():
     m = json.loads(router.MODEL_PATH.read_text())
     assert len(m["coef"]) == 384 and m["embedder"].endswith("all-MiniLM-L6-v2")
     assert config.DATA_DIR == router.MODEL_PATH.parent
+
+
+def test_wrong_language_answer_escalates():
+    pt = ("Osmosis é o movimento de água através de uma parede semipermeável de uma região de menor "
+          "concentração de soluto para uma de maior concentração.")
+    assert escalation_reason("Define osmosis.", pt, True) == "answer not in the question's language"
+
+
+def test_requested_translation_and_english_do_not_escalate():
+    fr = "Bonjour, je voudrais réserver une table pour deux personnes ce soir à huit heures, s'il vous plaît."
+    assert escalation_reason("Translate to French: I would like a table for two tonight at eight.", fr, True) is None
+    en = "Osmosis is the movement of water across a semipermeable membrane from a dilute solution to a concentrated one."
+    assert escalation_reason("Define osmosis.", en, True) is None
