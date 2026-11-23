@@ -18,6 +18,7 @@ function untex(s: string) {
     .replace(/\\([a-zA-Z]+)/g, (m, w) => sym[w] ?? m)
     .replace(/\\frac\{([^{}]*)\}\{([^{}]*)\}/g, "($1)/($2)")
     .replace(/\\(?:text|mathrm|mathbf|operatorname)\{([^{}]*)\}/g, "$1")
+    .replace(/([_^])\{([^{}]*)\}/g, "$1$2")
     .replace(/\\([%$,;!])/g, (_, c) => (c === "%" || c === "$" ? c : " "));
 }
 
