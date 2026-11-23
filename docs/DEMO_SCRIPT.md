@@ -11,7 +11,7 @@ Before the slot: laptop plugged in, other GPU apps closed, app already running, 
 | 2:45-3:15 | Speaker 3 | Reword the first question -> cache hit, ~0 Wh, instant. Then change a number in a cached question -> miss | Similar questions reuse answers; different numbers never do. |
 | 3:15-3:45 | Speaker 2 | Invite a judge to type any question | (Let it run. Read the receipt aloud.) |
 | 3:45-4:30 | Speaker 1 | Dashboard + eval tab | X% energy saved, Y% quality retained on 100 questions, router accuracy Z. Read real numbers only. |
-| 4:30-5:00 | Speaker 1 | Limitations + next steps slide | Cloud energy is estimated; we measured what we could. Next: proxy for campus-wide use. |
+| 4:30-5:00 | Speaker 1 | Limitations + next steps slide | Cloud energy is estimated; we measured what we could. The OpenAI-compatible proxy already works with any client; next: campus-wide rollout with per-user cache scoping. |
 
 Optional wow moment if local model works: turn Wi-Fi off before 1:30 and say so.
 
