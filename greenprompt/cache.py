@@ -36,7 +36,7 @@ PERSONAL = re.compile(
     r"|credit card|debit card|card number|pin code|upi pin|ssn)\b", re.I)
 
 NUMBER = re.compile(r"\d+(?:\.\d+)?%?")
-WORD = re.compile(r"[A-Za-z][\w'-]*")
+WORD = re.compile(r"[A-Za-z][A-Za-z0-9-]*")  # "India's" -> "India", "s"
 
 
 def followup_reason(prompt: str) -> str | None:

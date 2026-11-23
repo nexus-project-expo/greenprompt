@@ -127,3 +127,4 @@ def test_embedding_time_is_recorded(cache):
 def test_names_match_ignores_sentence_start():
     assert names_match("Explain normalization in DBMS", "What is normalization in DBMS?")
     assert not names_match("Explain Docker", "Explain Kubernetes")
+    assert names_match("Who was India's first Prime Minister?", "Who was the first Prime Minister of India?")
