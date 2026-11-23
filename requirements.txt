@@ -1,0 +1,11 @@
+# Pin versions once installed (pip freeze) so all three laptops match.
+streamlit
+openai
+python-dotenv
+sentence-transformers
+numpy
+scikit-learn
+joblib
+pandas
+nvidia-ml-py
+pytest

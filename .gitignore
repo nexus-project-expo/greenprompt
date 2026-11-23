@@ -1,0 +1,12 @@
+.env
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.sqlite
+*.db
+results/*.csv
+!results/.gitkeep
+data/router.joblib
+.streamlit/secrets.toml
+.DS_Store
