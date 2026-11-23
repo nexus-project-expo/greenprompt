@@ -21,6 +21,7 @@ from datetime import datetime
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")  # model text can hold characters cp1252 can't print
 
 from greenprompt import config, energy, models, pipeline  # noqa: E402
 from greenprompt.cache import SemanticCache  # noqa: E402
@@ -152,8 +153,10 @@ def judge_one(q, gp, base, rng):
     swap = rng.random() < 0.5
     a, b = (base, gp) if swap else (gp, base)
     msgs = [{"role": "user", "content": JUDGE_PROMPT.format(q=q, a=a[:6000], b=b[:6000])}]
-    for _ in range(2):
-        r = models.chat("judge", msgs)
+    # One judge only (no fallback to the large model, which would grade its own answers); wait out rate limits.
+    for wait in (0, 15, 30, 60):
+        time.sleep(wait)
+        r = models.call(config.JUDGE, "judge", msgs, retries=0)
         if not r.ok:
             continue
         f = dict(re.findall(r"^\W*(VERDICT|A_OK|B_OK|REASON)\W*:\s*\**(.+?)\**\s*$", r.text, re.M | re.I))
@@ -161,8 +164,14 @@ def judge_one(q, gp, base, rng):
         word = f.get("VERDICT", "").split()[0].strip("*.,").upper() if f.get("VERDICT") else ""
         gp_letter = "B" if swap else "A"
         ok = f.get(f"{gp_letter}_OK", "").lower()
+        base_ok = f.get(f"{'A' if gp_letter == 'B' else 'B'}_OK", "").lower()
         if word in ("A", "B", "EQUAL") and ok[:3] in ("yes", "no"):
             verdict = "same" if word == "EQUAL" else ("better" if word == gp_letter else "worse")
+            # The judge sometimes contradicts itself; its per-answer correctness flags win.
+            if ok.startswith("no") and base_ok.startswith("yes"):
+                verdict = "worse"
+            elif ok.startswith("yes") and base_ok.startswith("no"):
+                verdict = "better"
             return {"verdict": verdict, "gp_ok": ok.startswith("yes"), "raw": f.get("REASON", "")[:300],
                     "judge": r.model, "gp_was": gp_letter}
     return None
@@ -170,6 +179,8 @@ def judge_one(q, gp, base, rng):
 
 def run_judge(qs, state):
     rng = random.Random(7)
+    for k in [k for k, v in state["judge"].items() if v["judge"] != config.JUDGE.model]:
+        del state["judge"][k]  # re-judge anything a fallback judge graded
     todo = [q for q in qs if state["pipeline"].get(q["id"], {}).get("tier") not in (None, "large", "small+large")
             and q["id"] not in state["judge"]]
     print(f"judge: {len(todo)} to run")
