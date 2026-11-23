@@ -129,5 +129,5 @@ def warm_up() -> dict:
     status["idle_w"] = energy.measure_idle()
     status["idle_util_pct"] = energy.IDLE_UTIL_PCT
     # A busy GPU at idle (a game, a video) makes "power above idle" meaningless; the UI shows this as a warning.
-    status["gpu_busy"] = energy.IDLE_UTIL_PCT is not None and energy.IDLE_UTIL_PCT > energy.BUSY_UTIL_PCT
+    status["gpu_busy"] = energy.gpu_busy()
     return status

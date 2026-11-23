@@ -41,8 +41,28 @@ def _make_reader():
 _reader = None
 _reader_checked = False
 IDLE_W: float | None = None  # measured once at startup by measure_idle()
-IDLE_UTIL_PCT: float | None = None  # GPU utilisation while idle; high means another app (a game) is using it
-BUSY_UTIL_PCT = 10.0
+IDLE_UTIL_PCT: float | None = None  # GPU utilisation while idle, for information
+POWER_LIMIT_W: float | None = None
+# "Idle" above a quarter of the power limit means another app (a game) is drawing power, so "above idle"
+# is meaningless. Utilisation is no good for this: at idle clocks a browser alone reads 20-30%.
+BUSY_POWER_FRACTION = 0.25
+BUSY_UTIL_PCT = 10.0  # fallback only, when the power limit can't be read
+
+
+def read_power_limit() -> float | None:
+    try:
+        import pynvml
+
+        pynvml.nvmlInit()
+        return pynvml.nvmlDeviceGetEnforcedPowerLimit(pynvml.nvmlDeviceGetHandleByIndex(0)) / 1000.0
+    except Exception:
+        return None
+
+
+def gpu_busy() -> bool:
+    if IDLE_W is not None and POWER_LIMIT_W:
+        return IDLE_W > BUSY_POWER_FRACTION * POWER_LIMIT_W
+    return IDLE_UTIL_PCT is not None and IDLE_UTIL_PCT > BUSY_UTIL_PCT
 
 
 def read_util() -> float | None:
@@ -68,7 +88,8 @@ def read_watts() -> float | None:
 def measure_idle(seconds: float = 3.0, settle_s: float = 6.0) -> float | None:
     """Average GPU power with nothing generating. Call after the local model is loaded.
     Waits `settle_s` first: the GPU stays in a high power state for ~4 s after generating."""
-    global IDLE_W, IDLE_UTIL_PCT
+    global IDLE_W, IDLE_UTIL_PCT, POWER_LIMIT_W
+    POWER_LIMIT_W = read_power_limit()
     time.sleep(settle_s)
     samples, utils = [], []
     end = time.perf_counter() + seconds

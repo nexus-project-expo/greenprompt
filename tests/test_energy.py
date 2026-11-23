@@ -89,3 +89,16 @@ def test_missing_grid_factor_is_labelled(monkeypatch):
     monkeypatch.setattr(config, "GRID_EF_G_PER_KWH", 0.0)
     r = compute_receipt("cache", [], 0.01, 0.01)
     assert r.g_co2 == 0 and r.grid_note == "grid factor not set"
+
+
+@pytest.mark.parametrize("idle,limit,util,busy", [
+    (13.0, 95.0, 30.0, False),   # browser open: high utilisation at idle clocks, low power
+    (88.0, 95.0, 29.0, True),    # a game running
+    (13.0, None, 30.0, True),    # no power limit: fall back to utilisation
+    (13.0, None, 2.0, False),
+])
+def test_gpu_busy_uses_idle_power(monkeypatch, idle, limit, util, busy):
+    monkeypatch.setattr(energy, "IDLE_W", idle)
+    monkeypatch.setattr(energy, "POWER_LIMIT_W", limit)
+    monkeypatch.setattr(energy, "IDLE_UTIL_PCT", util)
+    assert energy.gpu_busy() is busy
