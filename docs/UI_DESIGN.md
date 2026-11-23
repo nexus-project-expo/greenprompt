@@ -34,7 +34,7 @@ latency ....................... 1.8 s
 - **Chat tab (default):** two columns.
   - Left (~60%): conversation, input box at bottom, an `Accuracy mode` toggle next to the input with a one-line hint ("always use the large model").
   - Right (~40%): the receipt for the latest answer, "why this route" (reasons as small chips), and, when the local model runs, a live GPU power sparkline (watts vs seconds) with the idle baseline drawn as a dashed line and the area above it shaded (that area *is* the energy we count).
-- **Dashboard tab:** a row of 4 stat tiles (Requests, Cache hit rate, Energy saved Wh and %, CO2 avoided g), then two charts: cumulative Wh (GreenPrompt vs all-large baseline, two lines) and tier split (horizontal stacked bar: cache / small / large / escalated). Use Altair or Plotly with the palette above, no chart junk, no 3D, no pie charts.
+- **Dashboard tab:** a row of 4 stat tiles (Requests, Cache hit rate, Energy saved Wh and %, CO2 avoided g), then two charts: cumulative Wh (GreenPrompt vs all-large baseline, two lines) and tier split (horizontal stacked bar: cache / small / large / escalated). Hand-drawn SVG with the palette above, no chart junk, no 3D, no pie charts.
 - **Evaluation tab:** headline numbers (energy saved, quality retained, router accuracy, cache false-hit rate) as tiles, a 2x2 router confusion grid, and a short "Method" paragraph plus "Limitations" list in plain text.
 - **About/Method popover:** sources for every factor (IEA 2025, Google 2025, CEA), shown when hovering the "est." tag.
 

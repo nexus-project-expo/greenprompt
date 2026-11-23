@@ -159,7 +159,7 @@ def compute_receipt(...) -> Receipt
 ```
 
 ### pipeline.py
-`handle_prompt(prompt, history, accuracy_mode) -> (answer, Receipt, RouteDecision | None, cache_info)`. Wraps everything in try/except. If both models fail, return a friendly error message and a zero receipt; never crash the Streamlit app.
+`handle_prompt(prompt, history, accuracy_mode) -> (answer, Receipt, RouteDecision | None, cache_info)`. Wraps everything in try/except. If both models fail, return a friendly error message and a zero receipt; never crash the server or the UI.
 
 ### store.py
 sqlite table `requests(id, ts, prompt_hash, tier, model, p_hard, escalated, cache_hit, wh, g_co2, ml_water, baseline_wh, latency_s, measured)`. Do not store raw prompts that failed the personal-data check.

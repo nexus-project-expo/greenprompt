@@ -8,7 +8,7 @@ Expo: 25 Nov 2026, Project Expo 2:00 PM. Everything below must be done before th
 |---|---|---|
 | Hari | Semantic cache and its rules | `greenprompt/cache.py`, cache tests, cache trap questions |
 | Fragan | Model clients, router, energy measurement, local model test | `models.py`, `router.py`, `energy.py`, `scripts/check_local_model.py`, `scripts/train_router.py` |
-| Pallavi | Streamlit UI, receipt card, dashboard, slides | `app.py`, `store.py`, presentation |
+| Pallavi | Next.js UI, receipt card, dashboard, slides | `web/`, `store.py`, presentation |
 | All | Pipeline glue, datasets, evaluation, rehearsal | `pipeline.py`, `data/*.csv`, `scripts/run_eval.py` |
 
 Work on separate branches or at least separate files; merge often.
