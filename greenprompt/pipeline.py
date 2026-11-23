@@ -10,7 +10,9 @@ from greenprompt.store import Store
 
 log = logging.getLogger("greenprompt")
 
-SYSTEM = {"role": "system", "content": "You are a helpful assistant. Answer clearly and concisely. "
+SYSTEM = {"role": "system", "content": "You are a helpful assistant. Always reply in the same language as the "
+                                      "user's question; if the question is in English, reply in English. "
+                                      "Answer clearly and concisely. "
                                       "Write maths in plain text, never LaTeX."}
 NO_MODEL_MSG = ("No model could answer right now. Cached answers still work. "
                 "Check the internet connection, or that Ollama is running.")
