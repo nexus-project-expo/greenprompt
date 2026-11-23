@@ -36,6 +36,7 @@ JUDGE_GAP_S = 4.5
 
 # ---------- rate limiting for the large model ----------
 _used: collections.deque = collections.deque()
+_waited = [0.0]  # seconds spent waiting for the rate limit, subtracted from reported latency
 _real_call = models.call
 
 
@@ -48,6 +49,7 @@ def _paced_call(ep, tier, messages, retries=1, timeout=None):
             if sum(t for _, t in _used) + 1500 <= TPM_BUDGET:
                 break
             time.sleep(1)
+            _waited[0] += 1
     r = _real_call(ep, tier, messages, retries, timeout)
     if ep == config.LARGE:
         _used.append((time.monotonic(), (r.prompt_tokens or 0) + (r.completion_tokens or 0) or 1500))
@@ -105,7 +107,9 @@ def run_pipeline(qs, state):
     if todo:
         print("  warm-up:", pipeline.warm_up())
     for q in todo:
+        w0 = _waited[0]
         answer, r, d, info = pipeline.handle_prompt(q["prompt"])
+        r.latency_s -= _waited[0] - w0
         if info.get("error"):
             print(f"  #{q['id']} no answer ({info['error']}). Progress saved; rerun to resume.")
             save_state(state)
