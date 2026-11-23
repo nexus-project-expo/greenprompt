@@ -30,6 +30,9 @@ SENSOR_TAIL_S = 1.0  # keep sampling after a local answer; the power reading lag
 
 def _ask(tier: str, messages: list[dict]) -> tuple[models.ModelResult, CallEnergy, list]:
     """One model call, with GPU power measured when it runs on the local model."""
+    if tier != "small" or config.SMALL_BACKEND != "ollama":  # cloud only: nothing to measure
+        r = models.chat(tier, messages)
+        return r, CallEnergy(r.model, r.backend, tier, None), [], 0.0
     with PowerSampler() as s:
         r = models.chat(tier, messages)
         local = r.backend == "ollama"

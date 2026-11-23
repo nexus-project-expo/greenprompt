@@ -64,6 +64,14 @@ def test_hard_goes_large(setup):
     assert r.tier == "large" and calls == ["large"] and not r.measured
 
 
+def test_cloud_calls_do_not_sample_gpu_power(setup, monkeypatch):
+    def no_sampler(*a, **k):
+        raise AssertionError("GPU sampler started for a cloud call")
+    monkeypatch.setattr(pipeline, "PowerSampler", no_sampler)
+    _, r, _, _ = pipeline.handle_prompt("Prove that root 2 is irrational")
+    assert r.tier == "large"
+
+
 def test_accuracy_mode_forces_large(setup):
     _, calls, _ = setup
     pipeline.handle_prompt("What is a firewall?", accuracy_mode=True)
