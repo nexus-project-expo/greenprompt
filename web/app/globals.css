@@ -68,7 +68,8 @@ code, pre { font-family: var(--mono); font-size: 0.9em; }
 .starters button {
   text-align: left; border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 8px 14px;
 }
-.starters button:hover { border-color: var(--green); }
+.starters button:hover:not(:disabled) { border-color: var(--green); }
+.starters button:disabled { opacity: 0.5; cursor: default; }
 
 .turn { padding: 12px 0 12px 16px; border-left: 2px solid transparent; margin-bottom: 8px; }
 .turn.sel { border-left-color: var(--green); }

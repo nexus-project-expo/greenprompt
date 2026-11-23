@@ -116,9 +116,11 @@ export default function Home() {
     listRef.current?.scrollTo({ top: listRef.current.scrollHeight });
   }, [turns]);
 
+  const warming = status?.warm === "starting";
+
   async function send(text: string) {
     const prompt = text.trim();
-    if (busyRef.current || !prompt) return;
+    if (busyRef.current || warming || !prompt) return;
     const history = turns
       .slice(-3)
       .flatMap((t) => (t.result && !t.error ? [{ role: "user", content: t.prompt }, { role: "assistant", content: t.result.answer }] : []));
@@ -180,7 +182,7 @@ export default function Home() {
                     </p>
                     <div className="starters">
                       {STARTERS.map((s) => (
-                        <button key={s} onClick={() => send(s)}>{s}</button>
+                        <button key={s} onClick={() => send(s)} disabled={warming}>{s}</button>
                       ))}
                     </div>
                   </div>
@@ -196,16 +198,16 @@ export default function Home() {
                     {t.result && (
                       <>
                         {t.error ? <p className="err">{ERRORS[t.error] ?? t.result.answer}</p> : <Answer text={t.result.answer} />}
-                        <div className="meta">
-                          <button className="meta-receipt" onClick={() => setSel(t.id)} aria-pressed={t.id === sel}>
-                            {routeShort(t.result)}, {sig(t.result.receipt.wh)} Wh {t.result.receipt.measured ? "measured" : "est."}
-                          </button>
-                          {!t.error && t.result.receipt.tier !== "error" && (
-                            t.reported ? <span className="muted">{t.reported}</span> : (
+                        {!t.error && (
+                          <div className="meta">
+                            <button className="meta-receipt" onClick={() => setSel(t.id)} aria-pressed={t.id === sel}>
+                              {routeShort(t.result)}, {sig(t.result.receipt.wh)} Wh {t.result.receipt.measured ? "measured" : "est."}
+                            </button>
+                            {t.reported ? <span className="muted">{t.reported}</span> : (
                               <button className="link" onClick={() => report(t)}>Report wrong answer</button>
-                            )
-                          )}
-                        </div>
+                            )}
+                          </div>
+                        )}
                       </>
                     )}
                   </div>
@@ -239,8 +241,8 @@ export default function Home() {
                       Accuracy mode <span className="muted">always use the large model</span>
                     </span>
                   </label>
-                  <button type="submit" className="send" disabled={busy || !input.trim()}>
-                    {busy ? "Answering" : "Ask"}
+                  <button type="submit" className="send" disabled={busy || warming || !input.trim()}>
+                    {busy ? "Answering" : warming ? "Warming up" : "Ask"}
                   </button>
                 </div>
               </form>
