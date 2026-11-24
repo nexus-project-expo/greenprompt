@@ -31,7 +31,7 @@ def main() -> int:
 
     X = router.features(prompts)
     E = embedder.embed([router.normalise(r["prompt"]) for r in evalq])
-    sims = E @ X[:, :-1].T  # meaning only, without the length column
+    sims = E @ (X[:, :-1] / router.EMBED_SCALE).T  # meaning only (cosine), without the length column
     dups = [(evalq[i]["id"], evalq[i]["prompt"], prompts[j], sims[i, j])
             for i, j in enumerate(sims.argmax(1)) if sims[i, j] >= NEAR_DUP]
     if dups:
@@ -42,11 +42,13 @@ def main() -> int:
     print(f"Disjoint: no eval prompt is within {NEAR_DUP} cosine of a training prompt")
 
     # Pick regularisation by 5-fold CV on the training set only; the eval set is never used for tuning.
+    # Simplest model within 0.01 of the best CV score: the differences are well inside CV noise.
     scores = {}
-    for c in (1, 3, 10, 30):
+    for c in (0.03, 0.1, 0.3, 1):
         cv = cross_val_score(LogisticRegression(C=c, class_weight="balanced", max_iter=5000), X, y, cv=5)
         scores[c] = (cv.mean(), cv.std())
-    best = max(scores, key=lambda c: scores[c][0])
+    top = max(s[0] for s in scores.values())
+    best = min(c for c in scores if scores[c][0] >= top - 0.01)
     print(f"5-fold CV accuracy (classifier alone): {scores[best][0]:.3f} +/- {scores[best][1]:.3f} at C={best}")
     clf = LogisticRegression(C=best, class_weight="balanced", max_iter=5000).fit(X, y)
     router.MODEL_PATH.write_text(json.dumps(

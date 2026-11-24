@@ -61,11 +61,15 @@ def normalise(prompt: str) -> str:
 
 
 def features(prompts: list[str]) -> np.ndarray:
-    """Classifier input: the meaning (MiniLM embedding) plus log word count. With the embedding alone the
-    classifier judged by topic ("who painted starry night" looked hard); length is a direct difficulty signal."""
-    E = embedder.embed([normalise(p) for p in prompts])
+    """Classifier input: the meaning (MiniLM embedding) plus log word count.
+    The embedding is a unit vector, so each of its 384 values is tiny; unscaled, the classifier leaned almost
+    entirely on length (a long but easy question looked hard). Scaled up, meaning leads and length only helps."""
+    E = embedder.embed([normalise(p) for p in prompts]) * EMBED_SCALE
     L = np.log1p([[len(p.split())] for p in prompts]).astype(np.float32)
     return np.hstack([E, L])
+
+
+EMBED_SCALE = 20.0
 
 
 class Router:
