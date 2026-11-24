@@ -271,8 +271,9 @@ def summarise(qs, state) -> dict:
             "Cloud energy is an estimate (Google 2025 median prompt, range x0.5 to x2), not a measurement.",
             "Local energy counts the GPU only, not CPU, RAM or cooling.",
             "An LLM judge can be wrong; a 15-question hand check is in progress.",
-            "Router weights were lightly tuned after looking at this set (C chosen by cross-validation on training "
-            "data, 15 training rows added), so router accuracy here is not fully unseen.",
+            "Router tuning saw this set: training rows were added after earlier runs, and the unsure band (0.10) "
+            "was chosen while checking it, so router accuracy here is not fully unseen. The router ignores "
+            "trailing punctuation and case, so casually typed questions route the same as these.",
         ],
     }, rows
 
