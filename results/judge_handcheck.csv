@@ -1,5 +1,5 @@
 id,prompt,greenprompt_answer,baseline_answer,judge_verdict,judge_reason,your_verdict,agree
-14,What is the speed of light in a vacuum?,"The speed of light in a vacuum is approximately 299,792,458 meters per second.","The speed of light in a vacuum is **299,792,458 m/s**.",same,Both answers provide the exact same scientifically correct value with different formatting.,,
+14,What is the speed of light in a vacuum?,"The speed of light in a vacuum is approximately 299,792,458 meters per second.","The speed of light in a vacuum is **299,792,458 m/s**.",same,Both answers provide the exact same scientifically correct value with different formatting.,same,yes
 1,What is normalization in DBMS?,"Normalization in DBMS is a process used to eliminate redundancy and improve consistency and data integrity in a database. It involves organizing data into normalized tables to reduce data redundancy, which makes data more consistent and easier to maintain. The process of normalization is based on certain normal forms such as First Normal Form (1NF), Second Normal Form (2NF), Third Normal Form (3NF), Boyce-Codd Normal Form (BCNF), and others. Each form addresses specific issues related to data redundancy and dependency.","**Normalization** is a systematic process used in relational database design to organize data so that:
 
 1. **Redundancy is minimized** – the same piece of information isn’t stored in multiple places.
@@ -27,7 +27,7 @@ The process proceeds through a series of **normal forms** (NF), each adding stri
 - Excessive normalization can lead to many small tables, requiring many joins in queries, which may affect performance.
 - In practice, designers often stop at 3NF or BCNF and then selectively denormalize for performance-critical reports.
 
-In short, normalization is the disciplined way of structuring relational tables to store each fact once, enforce logical dependencies, and keep the database clean, consistent, and flexible.",worse,"Answer A provides a much more thorough, structured, and informative explanation including specific normal forms and trade-offs.",,
+In short, normalization is the disciplined way of structuring relational tables to store each fact once, enforce logical dependencies, and keep the database clean, consistent, and flexible.",worse,"Answer A provides a much more thorough, structured, and informative explanation including specific normal forms and trade-offs.",same,no
 37,Write a short thank-you note to a teacher.,"Here's a short thank-you note for a teacher:
 
 Dear [Teacher's Name],
@@ -42,11 +42,11 @@ Best regards,
 Thank you for your patience, encouragement, and dedication. Your lessons have inspired me to keep learning and growing, and I truly appreciate all the effort you put into helping us succeed. 
 
 With gratitude,  
-[Your Name]",same,Both answers correctly provide a short thank-you note to a teacher as requested.,,
-87,Who was India's first Prime Minister?,India's first Prime Minister was Jawaharlal Nehru.,"India’s first Prime Minister was Jawaharlal Nehru, who served from August 15 1947 (the day India gained independence) until his death on May 27 1964.",same,Both answers are factually correct and directly answer the question adequately.,,
+[Your Name]",same,Both answers correctly provide a short thank-you note to a teacher as requested.,same,yes
+87,Who was India's first Prime Minister?,India's first Prime Minister was Jawaharlal Nehru.,"India’s first Prime Minister was Jawaharlal Nehru, who served from August 15 1947 (the day India gained independence) until his death on May 27 1964.",same,Both answers are factually correct and directly answer the question adequately.,same,yes
 3,What is 15% of 800?,"To find 15% of 800, you can multiply 800 by 0.15.
 
-So, 15% of 800 is 120.",15 % of 800 is 120.,same,Both answers are completely correct and adequately answer the question.,,
+So, 15% of 800 is 120.",15 % of 800 is 120.,same,Both answers are completely correct and adequately answer the question.,same,yes
 11,What is a computer virus?,"A computer virus is a type of malicious software program that can replicate itself and spread to other files, emails, or computers. It usually enters a computer system by means of an infected attachment in an email or a downloaded file and executes by itself when triggered, causing damage or stealing private information.","A computer virus is a type of malicious software (malware) that can copy itself and spread from one computer to another. It typically attaches itself to legitimate programs or files, and when those programs are run or the infected files are opened, the virus activates. Once active, it can perform a variety of unwanted actions, such as:
 
 - Corrupting or deleting data
@@ -55,15 +55,15 @@ So, 15% of 800 is 120.",15 % of 800 is 120.,same,Both answers are completely c
 - Displaying unwanted messages or ads
 - Installing additional malware
 
-Viruses rely on user actions (like opening an infected email attachment or downloading a compromised file) or on exploiting software vulnerabilities to propagate. Their primary characteristic is self‑replication, which distinguishes them from other malware that may not copy themselves.",same,"Both answers are factually correct, accurate, and adequately explain what a computer virus is.",,
-16,What is 12 multiplied by 15?,12 multiplied by 15 equals 180.,12 multiplied by 15 equals 180.,same,Both answers are identical and correctly calculate that 12 multiplied by 15 is 180.,,
+Viruses rely on user actions (like opening an infected email attachment or downloading a compromised file) or on exploiting software vulnerabilities to propagate. Their primary characteristic is self‑replication, which distinguishes them from other malware that may not copy themselves.",same,"Both answers are factually correct, accurate, and adequately explain what a computer virus is.",same,yes
+16,What is 12 multiplied by 15?,12 multiplied by 15 equals 180.,12 multiplied by 15 equals 180.,same,Both answers are identical and correctly calculate that 12 multiplied by 15 is 180.,same,yes
 2,Define photosynthesis.,"Photosynthesis is the process by which plants, algae, and some bacteria use sunlight, carbon dioxide, and water to produce oxygen and energy in the form of sugar. This process occurs in the chloroplasts of plant cells, utilizing chlorophyll to capture light energy.","Photosynthesis is the process by which green plants, algae, and some bacteria convert light energy—usually from the sun—into chemical energy stored in sugar molecules. During photosynthesis, these organisms take in carbon dioxide (CO₂) from the air and water (H₂O) from the soil, use light energy captured by the pigment chlorophyll (or other pigments in non‑green organisms), and produce glucose (C₆H₁₂O₆) and oxygen (O₂) as by‑products. The overall simplified reaction can be written as:
 
 6 CO₂ + 6 H₂O + light energy → C₆H₁₂O₆ + 6 O₂
 
-In short, photosynthesis transforms inorganic carbon and water into organic food and releases oxygen, providing the energy base for most life on Earth.",same,"Both answers are factually correct and adequately define photosynthesis, with Answer A just providing more detail.",,
-4,What is the capital of Australia?,The capital of Australia is Canberra.,The capital of Australia is **Canberra**.,same,"Both answers are factually correct and directly answer the question accurately, differing only in markdown formatting.",,
-83,Tell me the chemical symbol of gold.,The chemical symbol for gold is Au.,The chemical symbol for gold is **Au**.,same,"Both answers correctly provide the chemical symbol for gold, with Answer B just adding markdown bolding.",,
+In short, photosynthesis transforms inorganic carbon and water into organic food and releases oxygen, providing the energy base for most life on Earth.",same,"Both answers are factually correct and adequately define photosynthesis, with Answer A just providing more detail.",same,yes
+4,What is the capital of Australia?,The capital of Australia is Canberra.,The capital of Australia is **Canberra**.,same,"Both answers are factually correct and directly answer the question accurately, differing only in markdown formatting.",same,yes
+83,Tell me the chemical symbol of gold.,The chemical symbol for gold is Au.,The chemical symbol for gold is **Au**.,same,"Both answers correctly provide the chemical symbol for gold, with Answer B just adding markdown bolding.",same,yes
 10,What is an operating system?,"An operating system is a software system that manages computer hardware and software resources, providing common services for computer programs. It serves as an interface between the user and the computer hardware, allowing users to interact with the system and run application software.","An operating system (OS) is system software that manages a computer’s hardware resources and provides common services for application programs. It acts as an intermediary between users/applications and the physical components of the machine, handling tasks such as:
 
 - **Resource management** – allocating CPU time, memory, storage, and I/O devices.
@@ -72,8 +72,8 @@ In short, photosynthesis transforms inorganic carbon and water into organic food
 - **Device control** – communicating with hardware via drivers and abstracting device details.
 - **User interface** – offering command‑line shells, graphical desktops, or APIs for programs to interact with the system.
 
-In short, the OS enables multiple programs to run efficiently, safely, and conveniently on the same hardware.",same,Both answers are completely correct and adequately define an operating system.,,
-84,Who is called the father of computers?,Charles Babbage is known as the father of computers.,"The person most often called the “father of computers” is **Charles Babbage**. He designed the first mechanical, programmable computers—the Difference Engine and later the Analytical Engine—in the 19th century.",same,"Both correctly identify Charles Babbage as the father of computers, making them equally adequate.",,
+In short, the OS enables multiple programs to run efficiently, safely, and conveniently on the same hardware.",same,Both answers are completely correct and adequately define an operating system.,same,yes
+84,Who is called the father of computers?,Charles Babbage is known as the father of computers.,"The person most often called the “father of computers” is **Charles Babbage**. He designed the first mechanical, programmable computers—the Difference Engine and later the Analytical Engine—in the 19th century.",same,"Both correctly identify Charles Babbage as the father of computers, making them equally adequate.",same,yes
 25,What is GDP?,"GDP stands for Gross Domestic Product. It is a measure of the total value of all goods and services produced within a country's borders in a specific time period, usually a year.","Gross Domestic Product (GDP) is the total monetary value of all finished goods and services produced within a country’s borders over a specific time period (usually a year or a quarter). It is commonly used as a broad measure of a nation’s overall economic activity and health. GDP can be calculated in three main ways, which should all give the same result:
 
 1. **Production (or output) approach** – adds up the value added at each stage of production across all industries.  
@@ -85,6 +85,6 @@ In short, the OS enables multiple programs to run efficiently, safely, and conve
 Key points:
 - **Nominal vs. Real GDP:** Nominal GDP uses current market prices, while real GDP adjusts for inflation to reflect the true volume of production.
 - **GDP per capita:** GDP divided by the population, giving an average economic output per person and often used to compare living standards across countries.
-- **Limitations:** GDP does not account for informal economic activity, income distribution, environmental degradation, or non‑market services like household labor. It is a useful indicator, but not a complete measure of welfare or quality of life.",worse,"Both are correct, but Answer A provides a much more comprehensive and helpful explanation.",,
-92,What is 15% of 900?,15% of 900 is 135.,15 % of 900 is 135.,same,Both answers are completely correct and provide the exact same accurate calculation.,,
-8,What is the boiling point of water in Fahrenheit?,The boiling point of water in Fahrenheit is 212 degrees Fahrenheit.,The boiling point of water at standard atmospheric pressure (1 atm) is **212 °F**.,same,Both answers are factually correct and clearly state the boiling point of water in Fahrenheit.,,
+- **Limitations:** GDP does not account for informal economic activity, income distribution, environmental degradation, or non‑market services like household labor. It is a useful indicator, but not a complete measure of welfare or quality of life.",worse,"Both are correct, but Answer A provides a much more comprehensive and helpful explanation.",same,no
+92,What is 15% of 900?,15% of 900 is 135.,15 % of 900 is 135.,same,Both answers are completely correct and provide the exact same accurate calculation.,same,yes
+8,What is the boiling point of water in Fahrenheit?,The boiling point of water in Fahrenheit is 212 degrees Fahrenheit.,The boiling point of water at standard atmospheric pressure (1 atm) is **212 °F**.,same,Both answers are factually correct and clearly state the boiling point of water in Fahrenheit.,same,yes
