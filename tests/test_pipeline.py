@@ -155,3 +155,14 @@ def test_store_never_keeps_raw_prompt(setup):
     with store._db() as db:
         dump = " ".join(str(v) for row in db.execute("SELECT * FROM requests") for v in row)
     assert "4821" not in dump and "OTP" not in dump
+
+
+def test_near_miss_hides_unrelated_questions_and_never_goes_stale(setup, monkeypatch):
+    pipeline.handle_prompt("What is a firewall?")
+    _, _, _, info = pipeline.handle_prompt("How do tides work?")  # unrelated: score only, no other user's text
+    assert info["nearest"]["prompt"] is None and info["nearest"]["similarity"] < pipeline.NEAR_SHOW_FLOOR
+    _, _, _, info = pipeline.handle_prompt("What is the weather today?")  # not cacheable: no lookup, no stale near miss
+    assert "nearest" not in info
+    monkeypatch.setattr(pipeline, "NEAR_SHOW_FLOOR", -1.0)  # a close question's text is shown
+    _, _, _, info = pipeline.handle_prompt("Why is the sea salty?")
+    assert info["nearest"]["prompt"] in ("What is a firewall?", "How do tides work?")

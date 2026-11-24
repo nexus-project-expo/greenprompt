@@ -18,6 +18,7 @@ NO_MODEL_MSG = ("No model could answer right now. Cached answers still work. "
                 "Check the internet connection, or that Ollama is running.")
 
 _parts: dict = {}
+NEAR_SHOW_FLOOR = 0.75
 
 
 def parts():
@@ -64,8 +65,11 @@ def _handle(prompt: str, history: list[dict], accuracy_mode: bool, t0: float):
     hit = cache.lookup(prompt, has_history) if cacheable else None
     overhead_s = time.perf_counter() - t
     info = {"cacheable": cacheable, "cache_reason": why, "hit": hit is not None}
-    if not hit and getattr(cache, "last_near", None):  # shown on screen so a miss explains itself
-        info["nearest"] = {"prompt": cache.last_near[0], "similarity": cache.last_near[1], "why": cache.last_near[2]}
+    if cacheable and not hit and cache.last_near:  # only when lookup ran for THIS prompt; shown so a miss explains itself
+        near, sim, reason = cache.last_near
+        # Another user's question text is shown only when it is nearly this one, so the chip can't be used to
+        # browse what other people asked.
+        info["nearest"] = {"prompt": near if sim >= NEAR_SHOW_FLOOR else None, "similarity": sim, "why": reason}
 
     if hit:
         receipt = energy.compute_receipt("cache", [], overhead_s, time.perf_counter() - t0, model=hit.model)

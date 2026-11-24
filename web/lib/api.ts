@@ -24,7 +24,7 @@ export type ChatResult = {
   route: { tier: string; p_hard: number; reasons: string[] } | null;
   cache: {
     hit: boolean; cacheable: boolean; cache_reason: string; similarity?: number; matched_prompt?: string;
-    nearest?: { prompt: string; similarity: number; why: string };
+    nearest?: { prompt: string | null; similarity: number; why: string };
   };
   error: string | null;
 };
