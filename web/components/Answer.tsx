@@ -31,7 +31,8 @@ function untex(s: string) {
 }
 
 // A markdown table: header row, then a |---|---| separator, then body rows. Captured so split() keeps it.
-const TABLE = /(^\|.*\|[ \t]*\n\|[ \t:|-]*-{3,}[ \t:|-]*\|[ \t]*(?:\n\|.*\|[ \t]*)*)/m;
+// Separator cells are bounded by "|" so the dash runs can't overlap (no catastrophic backtracking).
+const TABLE = /(^\|.*\|[ \t]*\n\|(?:[ \t]*:?-+:?[ \t]*\|)+[ \t]*(?:\n\|.*\|[ \t]*)*)/m;
 
 function Table({ src }: { src: string }) {
   const rows = src.trim().split("\n").map((r) =>
