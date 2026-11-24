@@ -1,0 +1,136 @@
+prompt,label_as_good,label_correct,judge_verdict,small_correct
+where do polar bears live,easy,easy,same,True
+what is the value of pi,easy,easy,same,True
+how does it rain,hard,easy,worse,True
+why do leaves change colour in autumn,hard,hard,worse,False
+whats the difference between weather and climate,easy,easy,same,True
+who was the first woman prime minister of india,hard,hard,worse,False
+what is the capital of sri lanka,easy,easy,same,True
+how many states are there in india,hard,hard,worse,False
+which river is the longest in india,hard,easy,worse,True
+what is the national animal of india,easy,easy,same,True
+when did india get independence,easy,easy,same,True
+what is the population of karnataka roughly,easy,easy,same,True
+who built the taj mahal,hard,easy,worse,True
+what is the currency of nepal,easy,easy,same,True
+name the planets in order from the sun,easy,easy,same,True
+what is a light year,easy,easy,same,True
+why is the sea salty,easy,easy,same,True
+how do birds fly,hard,easy,worse,True
+what is gravity in simple words,easy,easy,same,True
+explain newtons first law,easy,easy,same,True
+what is the unit of electric current,easy,easy,same,True
+what is ohms law,hard,easy,worse,True
+how does a battery work,hard,easy,worse,True
+what is an electron,hard,easy,worse,True
+whats the boiling point of water in kelvin,easy,easy,same,True
+what is the speed of light approximately,easy,easy,same,True
+how far is the moon from earth,hard,easy,worse,True
+what causes earthquakes,hard,easy,worse,True
+what is a volcano,easy,easy,same,True
+how are rainbows formed,hard,easy,worse,True
+why is the sky blue during the day and red at sunset,easy,easy,same,True
+what is evaporation,hard,easy,worse,True
+what is h2o,easy,easy,same,True
+how many bones does a baby have,hard,hard,worse,False
+what does the heart do,easy,easy,same,True
+what is blood pressure,easy,easy,same,True
+what are vitamins,hard,easy,worse,True
+why do we need sleep,hard,easy,worse,True
+how many hours should a student sleep,hard,easy,worse,True
+what is bmi,hard,easy,worse,True
+how do vaccines protect us,easy,easy,same,True
+what is a virus,hard,easy,worse,True
+whats the difference between bacteria and virus,hard,easy,worse,True
+what is diabetes,hard,easy,worse,True
+what is the largest organ in the human body,easy,easy,same,True
+what is photosynthesis in one line,easy,easy,same,True
+whats photosynthesis??,easy,easy,same,True
+define osmosis in simple words,hard,easy,worse,True
+what is a cell,hard,easy,worse,True
+what is dna made of,hard,easy,worse,True
+who discovered penicillin,easy,easy,same,True
+who invented the telephone,hard,easy,worse,True
+who is known as the missile man of india,easy,easy,same,True
+what is isro,hard,easy,worse,True
+what was chandrayaan 3,hard,hard,worse,False
+who was cv raman,hard,easy,worse,True
+what is the full form of isro,easy,easy,same,True
+what is the full form of html,easy,easy,same,True
+what does cpu stand for,easy,easy,same,True
+what is ram and rom,hard,easy,worse,True
+what is an operating system in one line,easy,easy,same,True
+what is the cloud in computing,easy,easy,same,True
+what is wifi,hard,easy,worse,True
+what is an ip address,hard,easy,worse,True
+what is a url,easy,easy,same,True
+what is a browser,hard,easy,worse,True
+what is a database,hard,easy,worse,True
+what is sql,easy,easy,same,True
+what is a primary key,easy,easy,same,True
+what is normal form in dbms,hard,hard,worse,False
+what is a foreign key,hard,easy,worse,True
+what is an algorithm,hard,easy,worse,True
+what is a variable in python,hard,hard,worse,False
+how do i print hello world in python,easy,easy,same,True
+what is a for loop,hard,easy,worse,True
+what is a list in python,hard,easy,worse,True
+how do i comment a line in python,easy,easy,same,True
+what is the difference between a list and a tuple in python,hard,easy,worse,True
+what is an api in simple terms,easy,easy,same,True
+what is git,hard,easy,worse,True
+what is github used for,hard,easy,worse,True
+what is html used for,hard,easy,worse,True
+what is css,hard,easy,worse,True
+what is javascript,hard,easy,worse,True
+what is java,hard,easy,worse,True
+what is object oriented programming in one line,easy,easy,same,True
+what is a compiler,easy,easy,same,True
+what is binary,hard,easy,worse,True
+convert 10 to binary,easy,easy,same,True
+what is 2 to the power 10,easy,easy,same,True
+what is 25 percent of 360,easy,easy,same,True
+what is 15 times 15,easy,easy,same,True
+what is 144 divided by 12,easy,easy,same,True
+what is the square root of 81,easy,easy,same,True
+what is 7 cube,easy,easy,same,True
+whats 3/4 as a decimal,easy,easy,same,True
+convert 5 feet to cm,easy,easy,same,True
+how many seconds in an hour,easy,easy,same,True
+what is the area of a circle formula,easy,easy,same,True
+what is the perimeter of a square with side 5,easy,easy,same,True
+what is a prime number give 5 examples,easy,easy,same,True
+is 91 a prime number,easy,easy,same,True
+what is the lcm of 4 and 6,easy,easy,same,True
+what is the hcf of 12 and 18,easy,easy,same,True
+if a pen costs 12 rupees how much do 5 pens cost,easy,easy,same,True
+a train goes 60 km in 1 hour how far in 3 hours,easy,easy,same,True
+what is simple interest formula,easy,easy,same,True
+what is 10 percent of 2500,easy,easy,same,True
+what is the value of e in maths,hard,easy,worse,True
+what is pythagoras theorem,easy,easy,same,True
+what is an even number,hard,easy,worse,True
+round 3.786 to two decimal places,easy,easy,same,True
+synonym for happy,easy,easy,same,True
+antonym of brave,easy,easy,same,True
+whats the plural of mouse,easy,easy,same,True
+past tense of go,easy,easy,same,True
+what does procrastinate mean,easy,easy,same,True
+use benevolent in a sentence,easy,easy,same,True
+correct this sentence: she dont like apples,easy,easy,same,True
+make this polite: send me the notes now,hard,hard,worse,False
+rewrite this formally: hey can u check my assignment,hard,easy,worse,True
+translate thank you to hindi,hard,hard,worse,False
+how do you say good night in kannada,hard,hard,worse,False
+what is a noun give examples,easy,easy,same,True
+what is an adjective,easy,easy,same,True
+what is a haiku,easy,easy,same,True
+write a two line poem about rain,easy,easy,same,True
+give me a catchy title for a science fair project on solar energy,hard,easy,worse,True
+suggest a name for a pet cat,hard,easy,worse,True
+tell me a joke about computers,hard,easy,worse,True
+what is a good breakfast for students,hard,easy,worse,True
+tips to study better for exams,hard,easy,worse,True
+how do i stay focused while studying,hard,easy,worse,True
+how to reduce screen time,hard,easy,worse,True
+how do i make a timetable for exams,hard,easy,worse,True

@@ -17,6 +17,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import run_eval  # noqa: E402  (also paces large-model calls to the free-tier token budget)
 from greenprompt import config, embedder, models, pipeline  # noqa: E402
+from greenprompt.router import normalise  # noqa: E402
 
 POOL = config.DATA_DIR / "router_pool.txt"
 OUT = config.DATA_DIR / "router_measured.csv"
@@ -38,7 +39,7 @@ def main() -> int:
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     pool = list(dict.fromkeys(l.strip() for l in POOL.read_text(encoding="utf-8").splitlines() if l.strip()))
     evalq = [r["prompt"] for r in csv.DictReader(open(config.DATA_DIR / "eval_questions.csv", encoding="utf-8"))]
-    P, E = embedder.embed(pool), embedder.embed(evalq)
+    P, E = embedder.embed([normalise(p) for p in pool]), embedder.embed([normalise(q) for q in evalq])  # as train_router
     keep = [p for p, s in zip(pool, (P @ E.T).max(1)) if s < NEAR_DUP]
     print(f"{len(pool)} pool questions, {len(pool) - len(keep)} dropped as too close to an eval question")
 

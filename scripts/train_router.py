@@ -24,6 +24,11 @@ def read(name: str) -> list[dict]:
 
 def main() -> int:
     train, evalq = read("router_train.csv"), read("eval_questions.csv")
+    # Labels measured by running both models and the judge (scripts/label_router_pool.py), not written by hand.
+    if (config.DATA_DIR / "router_measured.csv").exists():
+        measured = read("router_measured.csv")
+        print(f"+ {len(measured)} measured rows from router_measured.csv")
+        train += [{"prompt": r["prompt"], "label": r["label"], "checked": "measured"} for r in measured]
     prompts = [r["prompt"] for r in train]
     y = np.array([r["label"] == "hard" for r in train], dtype=int)
     print(f"{len(train)} training rows: {int((y == 0).sum())} easy, {int(y.sum())} hard; "
