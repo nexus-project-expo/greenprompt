@@ -39,6 +39,7 @@ DATE = re.compile(
 # Rule 3: personal data is never cached (or logged raw, see store.py).
 PERSONAL = re.compile(
     r"[\w.+-]+@[\w-]+\.[\w.]+|\+?\d[\d\s-]{8,}\d|\b\d{9,}\b"
+    r"|\b\d{4}(?:[\s./x-]?\d{4}){2,3}\b"  # card or Aadhaar in groups of four, whatever the separator
     r"|\b(password|passcode|passwd|otp|aadha+r|pan (card|number)|account (number|no)|a/c|cvv|ifsc"
     r"|credit card|debit card|card number|pin code|upi pin|ssn)\b", re.I)
 
@@ -83,12 +84,18 @@ def is_time_sensitive(prompt: str) -> bool:
     return bool(TIME_WORDS.search(prompt) or DATE.search(prompt))
 
 
-CALCULATION = re.compile(r"[\d.()]+(?:\s*[+*/x×÷^]\s*[\d.()]+)+")  # minus left out: "98450-12345" is a phone
+# The whole prompt is a sum: optional "what is / calculate", digits and operators, nothing else. Only + * ^ ×
+# count, so a phone written 98450-12345 or an ID written 1234/5678/9012 is never exempted.
+CALC_QUESTION = re.compile(r"^\s*(?:(?:what\s*is|what's|whats|calculate|compute|evaluate|find)\s+)?"
+                           r"[\d\s.()+*^×-]*[+*^×][\d\s.()+*^×-]*[?=\s]*$", re.I)
 
 
 def looks_personal(prompt: str) -> bool:
-    """A long number inside a calculation ("1000000000 + 1") is maths, not a phone or ID number."""
-    return bool(PERSONAL.search(CALCULATION.sub(" ", prompt)))
+    """A long number in a prompt that is purely a sum ("What is 1000000000 + 1?") is maths. Anything else with a
+    long number is checked as it stands (fails closed)."""
+    if CALC_QUESTION.match(prompt):
+        return False
+    return bool(PERSONAL.search(prompt))
 
 
 def numbers(text: str) -> set[str]:

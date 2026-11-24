@@ -206,3 +206,9 @@ def test_pronoun_without_a_subject_still_never_cached(cache, prompt):
 def test_long_number_in_a_calculation_is_not_personal(cache):
     assert cache.is_cacheable("What is 1000000000 + 1?", False) == (True, "cacheable")
     assert cache.is_cacheable("my number is 98450-12345", False) == (False, "looks like personal data")
+
+
+@pytest.mark.parametrize("prompt", ["my aadhaar 1234/5678/9012", "john.5+3@gmail.com is my email",
+                                    "my card 4111x1111x1111x1111", "my aadhaar is 1234 5678 9012 + 0"])
+def test_calculation_exemption_cannot_hide_personal_data(cache, prompt):
+    assert cache.is_cacheable(prompt, False) == (False, "looks like personal data")
