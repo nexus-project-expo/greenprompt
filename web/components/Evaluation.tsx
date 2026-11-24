@@ -66,7 +66,7 @@ export default function Evaluation({ data }: { data: EvalSummary | { error: stri
         {v.better ?? 0} better, {v.same ?? 0} same, {v.worse ?? 0} worse{data.unjudged ? `, ${data.unjudged} not judged` : ""}. Counting the large model's own answers as retained gives {pct(data.quality_retained_incl_large_pct)}. {data.measured} receipts measured on the GPU,{" "}
         {data.estimated} estimated.
       </p>
-      <section className="charts">
+      <section className="charts top">
         <figure className="panel">
           <figcaption>Router decisions, label vs route</figcaption>
           <table className="confusion">

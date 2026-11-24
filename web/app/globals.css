@@ -15,6 +15,7 @@
 
 * { box-sizing: border-box; }
 html, body { height: 100%; }
+html { scrollbar-gutter: stable; } /* the header stays put when a tab is taller than the window */
 body {
   margin: 0;
   background: var(--bg);
@@ -172,6 +173,7 @@ code, pre { font-family: var(--mono); font-size: 0.9em; }
 .t-sub { font-size: 13px; color: var(--muted); }
 .note { font-size: 13px; color: var(--muted); margin: 0; }
 .charts { display: grid; grid-template-columns: 3fr 2fr; gap: 16px; }
+.charts.top { align-items: start; }
 .panel { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 20px; }
 .panel figcaption { font-size: 14px; font-weight: 600; margin-bottom: 12px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; }
 .legend { font-weight: 400; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; }
