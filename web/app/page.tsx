@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Answer from "@/components/Answer";
 import Dashboard from "@/components/Dashboard";
 import Evaluation, { type EvalSummary } from "@/components/Evaluation";
+import History, { addToHistory, loadHistory, saveHistory, type Past } from "@/components/History";
 import PowerChart from "@/components/PowerChart";
 import ReceiptCard, { SampleReceipt } from "@/components/Receipt";
 import { api, ERRORS, isError, sig, type ChatResult, type Stats, type Status } from "@/lib/api";
@@ -74,6 +75,8 @@ export default function Home() {
   const [live, setLive] = useState<[number, number][]>([]);
   const [stats, setStats] = useState<Stats | null>(null);
   const [evalData, setEvalData] = useState<EvalSummary | { error: string } | null>(null);
+  const [past, setPast] = useState<Past[]>([]);
+  useEffect(() => setPast(loadHistory()), []); // after mount: the static export has no localStorage at build time
   const busyRef = useRef(false);
   const t0 = useRef(0);
   const listRef = useRef<HTMLDivElement>(null);
@@ -141,7 +144,23 @@ export default function Home() {
         t.id !== id ? t : isError(res) ? { ...t, error: res.error, time } : { ...t, result: res, error: res.error ?? undefined, time },
       ),
     );
+    if (!isError(res) && !res.error) {
+      const entry = { prompt, route: routeShort(res), wh: res.receipt.wh, measured: res.receipt.measured, at: Date.now() };
+      setPast((p) => {
+        const next = addToHistory(p, entry);
+        saveHistory(next);
+        return next;
+      });
+    }
     loadStats();
+  }
+
+  // A question from this session jumps to its answer; an older one is asked again (usually a cache hit).
+  function pick(prompt: string) {
+    const t = [...turns].reverse().find((x) => x.prompt === prompt && x.result && !x.error);
+    if (!t) return void send(prompt);
+    setSel(t.id);
+    document.getElementById(`turn-${t.id}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   async function report(t: Turn) {
@@ -188,7 +207,7 @@ export default function Home() {
                   </div>
                 )}
                 {turns.map((t) => (
-                  <div key={t.id} className={`turn${t.id === sel ? " sel" : ""}`}>
+                  <div key={t.id} id={`turn-${t.id}`} className={`turn${t.id === sel ? " sel" : ""}`}>
                     <p className="q">
                       {t.prompt}
                       {t.accuracy && <span className="q-flag">accuracy mode</span>}
@@ -280,6 +299,15 @@ export default function Home() {
                   ) : null}
                 </>
               ))}
+              <History
+                items={past}
+                onPick={pick}
+                disabled={busy || warming}
+                onClear={() => {
+                  setPast([]);
+                  saveHistory([]);
+                }}
+              />
             </aside>
           </div>
         )}
