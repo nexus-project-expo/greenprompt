@@ -201,3 +201,8 @@ def test_time_sensitive_in_context_still_never_cached(cache, prompt):
 @pytest.mark.parametrize("prompt", ["why is that?", "explain it simply", "how does it work", "why does it matter"])
 def test_pronoun_without_a_subject_still_never_cached(cache, prompt):
     assert cache.is_cacheable(prompt, False)[0] is False
+
+
+def test_long_number_in_a_calculation_is_not_personal(cache):
+    assert cache.is_cacheable("What is 1000000000 + 1?", False) == (True, "cacheable")
+    assert cache.is_cacheable("my number is 98450-12345", False) == (False, "looks like personal data")

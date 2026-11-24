@@ -19,3 +19,4 @@ results/eval_state.json
 !results/judge_handcheck.csv
 
 results/frames/
+results/label_state.json

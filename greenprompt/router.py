@@ -18,10 +18,16 @@ MODEL_PATH = config.DATA_DIR / "router.json"  # logistic regression weights, wri
 
 RULES = [
     ("code request", re.compile(
-        r"```|\b(def|class|function|return|import|#include|public static|SELECT|console\.log)\b.*[(){};:=]"
-        r"|\b(write|implement|debug|fix|refactor|optimi[sz]e|code)\b.{0,50}"
-        r"\b(code|function|program|script|class|query|bug|algorithm|regex|regular expression|api)\b"
-        r"|\b(find|fix) the bug\b|\bdebug\b", re.I | re.S)),
+        r"```|\b(def|class)\s+\w+\s*[(:]|\b(function|return|import|#include|public static|SELECT|console\.log)\b.*[(){};:=]"
+        r"|\b(write|implement|refactor|optimi[sz]e|code)\b.{0,50}"
+        r"\b(code|function|program|algorithm|regex|regular expression|api|sql)\b"
+        r"|\bdebug\b"
+        # "class", "bug", "query", "script" are everyday words ("my dance class", "a bug in my garden"): they only
+        # count when the question is also about programming.
+        r"|^(?=.*\b(?:python|java|javascript|typescript|golang|rust|sql|html|css|react|node|django|flask|code|coding"
+        r"|program|programming|software|app|api|function|compiler|error|exception|git|linux|database|loop)\b)"
+        r".*?\b(write|implement|fix|find|refactor|optimi[sz]e|solve)\b.{0,50}\b(class|query|bug|script|method|object)\b",
+        re.I | re.S)),
     ("multi-step maths", re.compile(
         r"\b(prove|derive|show that|step[- ]by[- ]step|solve for|solve:|integrate|differentiate|integral"
         r"|derivative|probability that|show (the|your) working)\b", re.I)),

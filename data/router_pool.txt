@@ -1,0 +1,290 @@
+where do polar bears live
+what is the value of pi
+how does it rain
+why do leaves change colour in autumn
+whats the difference between weather and climate
+who was the first woman prime minister of india
+what is the capital of sri lanka
+how many states are there in india
+which river is the longest in india
+who wrote the national anthem of india
+what is the national animal of india
+when did india get independence
+what is the population of karnataka roughly
+who built the taj mahal
+what is the currency of nepal
+name the planets in order from the sun
+what is a light year
+why is the sea salty
+how do birds fly
+what is gravity in simple words
+explain newtons first law
+what is the unit of electric current
+what is ohms law
+how does a battery work
+what is an electron
+whats the boiling point of water in kelvin
+what is the speed of light approximately
+how far is the moon from earth
+what causes earthquakes
+what is a volcano
+how are rainbows formed
+why is the sky blue during the day and red at sunset
+what is evaporation
+what is the chemical symbol for gold
+what is h2o
+how many bones does a baby have
+what does the heart do
+what is blood pressure
+what are vitamins
+why do we need sleep
+how many hours should a student sleep
+what is bmi
+how do vaccines protect us
+what is a virus
+whats the difference between bacteria and virus
+what is diabetes
+what is the largest organ in the human body
+what is photosynthesis in one line
+whats photosynthesis??
+define osmosis in simple words
+what is a cell
+what is dna made of
+who discovered penicillin
+who invented the telephone
+who is known as the missile man of india
+what is isro
+what was chandrayaan 3
+who was cv raman
+what is the full form of isro
+what is the full form of html
+what does cpu stand for
+what is ram and rom
+what is an operating system in one line
+what is the cloud in computing
+what is wifi
+what is an ip address
+what is a url
+what is a browser
+what is a database
+what is sql
+what is a primary key
+what is normal form in dbms
+what is a foreign key
+what is an algorithm
+what is a variable in python
+how do i print hello world in python
+what is a for loop
+what is a list in python
+how do i comment a line in python
+what is the difference between a list and a tuple in python
+what is an api in simple terms
+what is git
+what is github used for
+what is html used for
+what is css
+what is javascript
+what is java
+what is object oriented programming in one line
+what is a compiler
+what is binary
+convert 10 to binary
+what is 2 to the power 10
+what is 25 percent of 360
+what is 15 times 15
+what is 144 divided by 12
+what is the square root of 81
+what is 7 cube
+whats 3/4 as a decimal
+convert 5 feet to cm
+how many seconds in an hour
+how many days in a leap year
+what is the area of a circle formula
+what is the perimeter of a square with side 5
+what is a prime number give 5 examples
+is 91 a prime number
+what is the lcm of 4 and 6
+what is the hcf of 12 and 18
+if a pen costs 12 rupees how much do 5 pens cost
+a train goes 60 km in 1 hour how far in 3 hours
+what is simple interest formula
+what is 10 percent of 2500
+convert 30 degree celsius to fahrenheit
+what is the value of e in maths
+what is pythagoras theorem
+what is an even number
+round 3.786 to two decimal places
+synonym for happy
+antonym of brave
+whats the plural of mouse
+past tense of go
+what does procrastinate mean
+use benevolent in a sentence
+correct this sentence: she dont like apples
+make this polite: send me the notes now
+rewrite this formally: hey can u check my assignment
+translate thank you to hindi
+how do you say good night in kannada
+what is a noun give examples
+what is an adjective
+what is a haiku
+write a two line poem about rain
+give me a catchy title for a science fair project on solar energy
+suggest a name for a pet cat
+tell me a joke about computers
+what is a good breakfast for students
+tips to study better for exams
+how do i stay focused while studying
+how to reduce screen time
+how do i make a timetable for exams
+how can i improve my handwriting
+how do i save money as a student
+what should i pack for a trip to ooty
+how to make tea
+how do i boil an egg
+what is a healthy diet
+how much water should i drink in a day
+what is meditation
+benefits of walking daily
+how do i calm down before an exam
+what is the best way to learn english vocabulary
+what is a resume
+what should i write in an email asking for leave
+how do i greet a teacher in an email
+i am in class 6 and i want to know what photosynthesis is
+my little brother asked me why the sky is blue what should i tell him
+im preparing for a quiz tomorrow can you tell me who invented the light bulb
+so my teacher said something about mitochondria what is it
+quick question whats the capital of japan
+hey can you tell me how many continents there are
+umm whats the largest ocean
+plz tell me the full form of www
+yo whats 12 times 12
+whats the captial of australia
+who is the presidnet of usa
+wat is photosynthesis
+how many leggs does a spider have
+expalin gravity
+whats a blackhole
+in 2026 what is 5 times 6
+in 1998 who won the world cup
+what happened in 1947 in india
+what is the value of θ when sin θ is 1
+what does ∑ mean in maths
+what is the symbol for infinity
+what does ≠ mean
+whats √49
+explain how a neural network learns using backpropagation with the maths
+derive the formula for the area of a circle using integration
+prove that root 5 is irrational
+prove that there are infinitely many prime numbers
+solve x squared minus 5x plus 6 equals 0 and explain each step
+find the derivative of x cubed times sin x and show the steps
+a car accelerates from 0 to 20 metres per second in 5 seconds how far does it travel show working
+if i invest 10000 rupees at 8 percent compound interest for 3 years how much will i have show the calculation
+two trains leave stations 300 km apart at 60 and 40 km per hour when do they meet explain
+what is the probability of getting at least one six in four dice rolls show the working
+explain bayes theorem with a real medical test example
+explain eigenvalues and eigenvectors intuitively with an example
+explain the central limit theorem and why it matters in statistics
+explain how public key cryptography works step by step
+explain how https keeps my data safe from the moment i type a url
+explain how dns resolution works step by step
+explain the tcp three way handshake and why it is needed
+how does a cpu execute an instruction explain the fetch decode execute cycle
+explain virtual memory and paging in operating systems
+explain deadlock and the four conditions needed for it
+explain the cap theorem with an example from real databases
+compare sql and nosql databases and when to use each
+compare python and java for building a backend
+compare merge sort and quick sort in time and space
+compare stacks and queues with real life examples
+what are the pros and cons of electric vehicles in india
+what are the trade offs of remote work for companies and employees
+write a python function to check if a string is a palindrome and explain it
+write a python program that reads a csv file and prints the average of a column
+write a java program to reverse a linked list
+write a c program to find the factorial of a number using recursion
+write a sql query to find the second highest salary from an employee table
+write a regex to validate an email address and explain each part
+write a javascript function that debounces another function
+implement binary search in python and explain its complexity
+implement a stack using two queues
+design a database schema for a college library
+design a url shortener and explain how it would scale
+how would you design a chat application like whatsapp
+design a parking lot system using object oriented design
+debug this python code it says list index out of range: for i in range(len(a)+1): print(a[i])
+why does my react component re render infinitely when i set state in useeffect
+my java program throws a nullpointerexception how do i find the cause
+explain the difference between a process and a thread with examples and when to use each
+explain how garbage collection works in java
+explain how a transformer model works including attention
+explain how a large language model is trained
+explain overfitting and how to prevent it in machine learning
+explain gradient descent with an analogy and the maths
+explain how a convolutional neural network recognises images
+explain the difference between supervised unsupervised and reinforcement learning with examples
+explain how blockchain consensus works in proof of work and proof of stake
+analyse the causes of the 2008 financial crisis
+analyse the impact of social media on teenagers mental health
+analyse the themes of the novel to kill a mockingbird
+critically evaluate the green revolution in india
+explain the causes and consequences of the first world war
+explain the causes of the french revolution and its impact on europe
+explain how the indian constitution separates powers between the centre and states
+explain inflation and how the reserve bank of india controls it
+explain how the stock market works and what determines share prices
+explain the theory of relativity in simple terms with examples
+explain quantum entanglement without misleading analogies
+explain how vaccines train the immune system including memory cells
+explain the krebs cycle step by step
+explain how the human eye focuses on near and far objects
+explain the greenhouse effect and how it causes global warming in detail
+how does a nuclear power plant generate electricity and what are the risks
+explain how solar panels convert sunlight into electricity at the atomic level
+explain the working of a refrigerator using thermodynamics
+explain how an electric motor works with the physics behind it
+how does gps calculate my exact location
+explain how 5g is different from 4g technically
+write a 300 word essay on climate change and its effects on india
+write a persuasive speech for a school debate on banning plastic
+summarise the plot of the mahabharata in detail with the main characters
+write a short story about a robot who learns to feel
+write a formal complaint letter to a bank about a failed transaction with all the details
+write a cover letter for a software internship
+create a 7 day study plan for a class 12 physics exam
+plan a 3 day budget trip to goa with costs
+give me a step by step plan to learn machine learning in 3 months
+what are the arguments for and against nuclear energy explain both sides
+should india adopt a four day work week argue both sides
+explain how a startup should decide its pricing strategy
+explain the difference between machine learning and deep learning with examples of where each is used
+explain recursion with an example and when not to use it
+explain big o notation with examples of common complexities
+explain how hash tables handle collisions
+explain the difference between http and https and why it matters
+explain how cookies and sessions work in web applications
+what is the difference between a compiler and an interpreter explain with examples
+explain how version control with git branches and merges works
+why do neural networks need non linear activation functions
+how would you detect fraud in credit card transactions using machine learning
+explain how recommendation systems like netflix work
+what is the difference between ai machine learning and data science explain in detail
+explain the life cycle of a star from birth to death
+explain plate tectonics and how mountains are formed
+how did the indus valley civilisation decline according to historians
+explain the significance of the dandi march in indias freedom struggle
+compare the economic policies of nehru and narasimha rao
+explain why the roman empire fell
+explain game theory with the prisoners dilemma
+what is the monty hall problem and why is switching better
+explain how compound interest leads to exponential growth with an example
+a ladder 10 m long leans against a wall with its foot 6 m away how high does it reach show steps
+find the sum of the first 100 natural numbers and explain the method
+how many ways can 5 people sit in a row explain
+if the probability of rain is 0.3 each day what is the chance of no rain in 3 days explain
+what is the integral of 1 over x and why
+explain matrix multiplication with an example
+convert 255 to binary and hexadecimal and explain the steps
+explain how floating point numbers are stored and why 0.1 plus 0.2 is not exactly 0.3

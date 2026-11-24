@@ -83,8 +83,12 @@ def is_time_sensitive(prompt: str) -> bool:
     return bool(TIME_WORDS.search(prompt) or DATE.search(prompt))
 
 
+CALCULATION = re.compile(r"[\d.()]+(?:\s*[+*/x×÷^]\s*[\d.()]+)+")  # minus left out: "98450-12345" is a phone
+
+
 def looks_personal(prompt: str) -> bool:
-    return bool(PERSONAL.search(prompt))
+    """A long number inside a calculation ("1000000000 + 1") is maths, not a phone or ID number."""
+    return bool(PERSONAL.search(CALCULATION.sub(" ", prompt)))
 
 
 def numbers(text: str) -> set[str]:

@@ -135,3 +135,16 @@ def test_doubled_question_mark_is_one_question():
 
 def test_greek_maths_symbols_are_not_a_language():
     assert rule_reasons("what is the value of π") == [] and rule_reasons("what is θ in trigonometry") == []
+
+
+@pytest.mark.parametrize("prompt", ["Write a thank-you note to my dance class", "How do I fix a bug in my garden?",
+                                    "write a script for a school play", "what is the function of the heart?",
+                                    "Evaluate 2 + 2 and give the answer."])
+def test_everyday_words_are_not_code_or_analysis(prompt):
+    assert rule_reasons(prompt) == []
+
+
+@pytest.mark.parametrize("prompt", ["fix the bug in my python code", "write a java class for a bank account",
+                                    "write a python script to rename files", "debug this"])
+def test_programming_context_still_counts_as_code(prompt):
+    assert "rule: code request" in rule_reasons(prompt)
