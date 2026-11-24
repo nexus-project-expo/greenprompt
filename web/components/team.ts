@@ -15,7 +15,7 @@ export const TEAM = [
   },
   {
     name: "Pallavi Pai",
-    linkedin: "",
+    linkedin: "https://www.linkedin.com/in/paipallavi31/",
     email: "",
     instagram: "",
   },

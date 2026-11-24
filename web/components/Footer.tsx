@@ -50,7 +50,7 @@ function Social({ href, label, Icon }: { href: string; label: string; Icon: (p: 
 export default function Footer() {
   return (
     <footer className="site-footer">
-      <section aria-labelledby="contact-devs">
+      <section className="devs-row" aria-labelledby="contact-devs">
         <h2 id="contact-devs">Contact the devs</h2>
         <ul className="devs">
           {TEAM.map((dev) => (
@@ -69,10 +69,7 @@ export default function Footer() {
           ))}
         </ul>
       </section>
-      <div className="footer-base">
-        <p>Team Undervolt, NMAM Institute of Technology. Built for the NEXUS 2026 Student Project Expo.</p>
-        <p>© {new Date().getFullYear()} GreenPrompt</p>
-      </div>
+      <p className="footer-copy">© {new Date().getFullYear()} GreenPrompt, Team Undervolt, NMAM Institute of Technology</p>
     </footer>
   );
 }

@@ -188,6 +188,7 @@ export default function Home() {
         <Pills s={status} />
       </header>
 
+      <div className="scroll">
       <main className="main">
         {tab === "chat" && (
           <div className="chat">
@@ -205,7 +206,6 @@ export default function Home() {
                         <button key={s} onClick={() => send(s)} disabled={warming}>{s}</button>
                       ))}
                     </div>
-                    <Footer />
                   </div>
                 )}
                 {turns.map((t) => (
@@ -315,8 +315,9 @@ export default function Home() {
         )}
         {tab === "dashboard" && <Dashboard stats={stats} />}
         {tab === "evaluation" && <Evaluation data={evalData} />}
-        {tab !== "chat" && <Footer />}
       </main>
+      </div>
+      <Footer />
     </div>
   );
 }
