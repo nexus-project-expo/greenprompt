@@ -50,8 +50,8 @@ export default function ReceiptCard({ result, time, localName }: { result: ChatR
         ~{sig(r.baseline_wh)} Wh <Tag measured={false} sources={r.sources} />
       </Row>
       <Row label="saved">
-        <span className={r.saved_wh >= 0 ? "good" : "bad"}>
-          {r.saved_wh >= 0 ? pct(r.saved_pct) : `${pct(r.saved_pct)} (escalation cost extra)`}
+        <span className={r.saved_wh >= 0 ? "good" : r.escalated ? "bad" : ""}>
+          {r.saved_wh >= 0 || !r.escalated ? pct(Math.max(0, r.saved_pct)) : `${pct(r.saved_pct)} (escalation cost extra)`}
         </span>
       </Row>
       <Row label="CO2">{sig(r.g_co2)} g</Row>
