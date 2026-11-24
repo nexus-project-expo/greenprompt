@@ -66,8 +66,7 @@ export default function Evaluation({ data }: { data: EvalSummary | { error: stri
         {v.better ?? 0} better, {v.same ?? 0} same, {v.worse ?? 0} worse{data.unjudged ? `, ${data.unjudged} not judged` : ""}. Counting the large model's own answers as retained gives {pct(data.quality_retained_incl_large_pct)}. {data.measured} receipts measured on the GPU,{" "}
         {data.estimated} estimated.
       </p>
-      <section className="charts charts-start">
-        <figure className="panel">
+      <figure className="panel">
           <figcaption>Router decisions, label vs route</figcaption>
           <table className="confusion">
             <thead><tr><th /><th>routed small</th><th>routed large</th></tr></thead>
@@ -77,13 +76,16 @@ export default function Evaluation({ data }: { data: EvalSummary | { error: stri
             </tbody>
           </table>
           <p className="note">Easy sent large wastes energy. Hard sent small risks quality, which escalation watches for.</p>
-        </figure>
-        <div className="panel prose">
+      </figure>
+      <section className="panel split">
+        <div className="prose">
           <h3>Method</h3>
           <p>{data.method}</p>
+          <p className="note">Run {data.run_at}</p>
+        </div>
+        <div className="prose">
           <h3>Limitations</h3>
           <ul>{data.limitations.map((l) => <li key={l}>{l}</li>)}</ul>
-          <p className="note">Run {data.run_at}</p>
         </div>
       </section>
     </div>
