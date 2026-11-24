@@ -126,3 +126,12 @@ def test_trailing_punctuation_does_not_change_the_route(monkeypatch):
 def test_features_add_word_count():
     x = router.features(["one two three"])
     assert x.shape == (1, 385) and abs(x[0, -1] - np.log1p(3)) < 1e-6
+
+
+def test_doubled_question_mark_is_one_question():
+    assert rule_reasons("whats photosynthesis??") == []
+    assert "rule: several questions" in rule_reasons("What is DNS? And how does caching work?")
+
+
+def test_greek_maths_symbols_are_not_a_language():
+    assert rule_reasons("what is the value of π") == [] and rule_reasons("what is θ in trigonometry") == []

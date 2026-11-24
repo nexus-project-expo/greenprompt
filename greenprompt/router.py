@@ -32,7 +32,7 @@ RULES = [
         r"\b(design|architect)\b.{0,40}\b(system|backend|architecture|schema|database|app|api|service|pipeline)\b",
         re.I | re.S)),
 ]
-NON_LATIN = re.compile(r"[^\x00-ɏ -⁯₠-⃏\s\d\W]")
+NON_LATIN = re.compile(r"[^\x00-ɏͰ-Ͽ -⁯₠-⃏∀-⋿\s\d\W]")  # Greek letters and maths symbols (pi, theta, sum) are not a language
 UNSURE = re.compile(
     r"i'?m not sure|i am not sure|i don'?t know|i do not know|as an ai|cannot determine|can'?t determine"
     r"|unable to (answer|determine|help)|i'?m sorry,? but|i cannot help|not enough information", re.I)
@@ -40,7 +40,7 @@ UNSURE = re.compile(
 
 def rule_reasons(prompt: str) -> list[str]:
     reasons = [f"rule: {name}" for name, rx in RULES if rx.search(prompt)]
-    if prompt.count("?") >= 2:
+    if len(re.findall(r"[A-Za-z][^?]*\?+", prompt)) >= 2:  # two real questions, not "whats photosynthesis??"
         reasons.append("rule: several questions")
     if NON_LATIN.search(prompt):
         reasons.append("rule: non-English script")

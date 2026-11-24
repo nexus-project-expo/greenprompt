@@ -183,3 +183,21 @@ def test_same_calculation_written_differently_still_hits(cache):
     assert maths("What is 2 x 3?") == maths("2*3") == ["2*3"] and maths("explain max() in python") == []
     cache.store("whats 12*4", "48", "m")
     assert cache.lookup("12*4", False) is not None
+
+
+@pytest.mark.parametrize("prompt", ["where do polar bears live", "explain credit scores", "explain AC current",
+                                    "How does it rain?", "Define this term: photosynthesis"])
+def test_pallavis_everyday_questions_are_cacheable(cache, prompt):
+    """'live', 'scores', 'current' are only time-sensitive in context; a pronoun with its own subject is a fresh question."""
+    assert cache.is_cacheable(prompt, False) == (True, "cacheable")
+
+
+@pytest.mark.parametrize("prompt", ["live score of india vs australia", "current price of gold", "petrol price in mangalore",
+                                    "who is the current prime minister", "What is the weather in Udupi today?"])
+def test_time_sensitive_in_context_still_never_cached(cache, prompt):
+    assert cache.is_cacheable(prompt, False) == (False, "time-sensitive")
+
+
+@pytest.mark.parametrize("prompt", ["why is that?", "explain it simply", "how does it work", "why does it matter"])
+def test_pronoun_without_a_subject_still_never_cached(cache, prompt):
+    assert cache.is_cacheable(prompt, False)[0] is False

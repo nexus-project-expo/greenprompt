@@ -22,8 +22,15 @@ FOLLOWUP_START = re.compile(r"^\s*(and|but|so|also|then|why|how)\b.{0,25}\b(it|t
 
 # Rule 2: answers that go stale.
 TIME_WORDS = re.compile(
-    r"\b(today|tonight|now|current(ly)?|latest|recent(ly)?|news|weather|forecast|prices?|stocks?|scores?"
-    r"|live|trending|yesterday|tomorrow|this (week|month|year)|next (week|month|year)|last (week|night))\b", re.I)
+    r"\b(today|tonight|now|currently|latest|recent(ly)?|news|weather|forecast|trending|breaking|upcoming|so far"
+    r"|yesterday|tomorrow|this (week|month|year)|next (week|month|year)|last (week|night|month|year))\b"
+    # Words that are only time-sensitive in context: "live score" yes, "where do polar bears live" no;
+    # "share price" yes, "explain credit scores" no; "current affairs" yes, "AC current" no.
+    r"|\blive (scores?|stream(ing)?|match(es)?|updates?|news|coverage|telecast|feed)\b"
+    r"|\b(stock|share|petrol|diesel|gold|silver|bitcoin|crypto|onion|market) (prices?|rates?)\b|\bprices? of\b"
+    r"|\b(match|game|cricket|ipl|football|final) scores?\b|\bscores? of\b|\bstock market\b|\bexchange rates?\b"
+    r"|\bcurrent (affairs|events|prices?|scores?|president|prime minister|pm|ceo|leader|champion|status|situation"
+    r"|weather|rates?|time|date|year)\b|\bwho (is|are) the current\b", re.I)
 MONTHS = r"(jan(uary)?|feb(ruary)?|mar(ch)?|apr(il)?|may|june?|july?|aug(ust)?|sep(t(ember)?)?|oct(ober)?|nov(ember)?|dec(ember)?)"
 DATE = re.compile(
     rf"\b\d{{1,2}}[/.-]\d{{1,2}}[/.-]\d{{2,4}}\b|\b\d{{4}}-\d{{2}}-\d{{2}}\b"
@@ -51,12 +58,25 @@ WORD = re.compile(r"[A-Za-z][A-Za-z0-9-]*")  # "India's" -> "India", "s"
 def followup_reason(prompt: str) -> str | None:
     if FOLLOWUP_PHRASES.search(prompt):
         return "refers to an earlier message"
-    if FOLLOWUP_START.search(prompt):
-        return "refers to an earlier message"
-    # A short prompt built around a pronoun ("why is that?", "explain it simply") has no subject of its own.
-    if len(prompt.split()) <= 6 and PRONOUNS.search(prompt):
-        return "refers to an earlier message"
+    # "how does that work?", or a short prompt built around a pronoun ("why is that?", "explain it simply").
+    if FOLLOWUP_START.search(prompt) or (len(prompt.split()) <= 6 and PRONOUNS.search(prompt)):
+        return PRONOUN_ONLY
     return None
+
+
+PRONOUN_ONLY = "refers to something it doesn't name"
+# Words that don't give a question its own subject: "explain it simply" has none, "how does it rain" has "rain".
+NOT_A_SUBJECT = set("""the a an is are was were be been do does did what why how when where who which whom can could would should
+will you me my i of to in on for with about and or but so please than then more much very just also again there here not no
+yes it its that this they them those these he she his her their define explain describe tell give show mean means meaning
+work works working happen happens happened true false example examples simply simple detail details briefly term word okay
+ok right wrong really thing things elaborate summarise summarize clarify continue expand repeat difference better worse good
+bad correct sure use used uses purpose made called name named mean possible matter matters compare compared
+differ different related important""".split())
+
+
+def has_own_subject(prompt: str) -> bool:
+    return any(w.lower() not in NOT_A_SUBJECT and len(w) > 2 for w in WORD.findall(prompt))
 
 
 def is_time_sensitive(prompt: str) -> bool:
@@ -154,7 +174,10 @@ class SemanticCache:
             return False, "part of a conversation"
         if is_time_sensitive(prompt):
             return False, "time-sensitive"
-        if reason := followup_reason(prompt):
+        reason = followup_reason(prompt)
+        # A pronoun with its own subject ("how does it rain", "define this term: photosynthesis") is a fresh
+        # question for the cache. The server still sends chat history for it, so real follow-ups keep context.
+        if reason and not (reason == PRONOUN_ONLY and has_own_subject(prompt)):
             return False, reason
         if looks_personal(prompt):
             return False, "looks like personal data"
