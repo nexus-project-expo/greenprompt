@@ -84,17 +84,9 @@ def is_time_sensitive(prompt: str) -> bool:
     return bool(TIME_WORDS.search(prompt) or DATE.search(prompt))
 
 
-# The whole prompt is a sum: optional "what is / calculate", digits and operators, nothing else. Only + * ^ ×
-# count, so a phone written 98450-12345 or an ID written 1234/5678/9012 is never exempted.
-CALC_QUESTION = re.compile(r"^\s*(?:(?:what\s*is|what's|whats|calculate|compute|evaluate|find)\s+)?"
-                           r"[\d\s.()+*^×-]*[+*^×][\d\s.()+*^×-]*[?=\s]*$", re.I)
-
-
 def looks_personal(prompt: str) -> bool:
-    """A long number in a prompt that is purely a sum ("What is 1000000000 + 1?") is maths. Anything else with a
-    long number is checked as it stands (fails closed)."""
-    if CALC_QUESTION.match(prompt):
-        return False
+    """Fails closed: any 9+ digit number is treated as possibly personal, even in a sum ("1000000000 + 1"), because
+    it can't be told apart from a phone or ID number. Such a question is still answered, just never cached."""
     return bool(PERSONAL.search(prompt))
 
 

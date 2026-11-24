@@ -203,9 +203,11 @@ def test_pronoun_without_a_subject_still_never_cached(cache, prompt):
     assert cache.is_cacheable(prompt, False)[0] is False
 
 
-def test_long_number_in_a_calculation_is_not_personal(cache):
-    assert cache.is_cacheable("What is 1000000000 + 1?", False) == (True, "cacheable")
-    assert cache.is_cacheable("my number is 98450-12345", False) == (False, "looks like personal data")
+def test_long_numbers_fail_closed_even_in_a_sum(cache):
+    """A 10-digit number can't be told apart from a phone number, so it is never cached (still answered)."""
+    assert cache.is_cacheable("What is 1000000000 + 1?", False) == (False, "looks like personal data")
+    assert cache.is_cacheable("what is 9845012345 + 0", False) == (False, "looks like personal data")
+    assert cache.is_cacheable("What is 1234 + 5678?", False) == (True, "cacheable")
 
 
 @pytest.mark.parametrize("prompt", ["my aadhaar 1234/5678/9012", "john.5+3@gmail.com is my email",
