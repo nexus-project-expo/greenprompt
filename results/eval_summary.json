@@ -1,27 +1,27 @@
 {
   "n": 100,
-  "run_at": "24 Nov 2026, 01:05",
-  "energy_saved_pct": 55.3,
-  "gp_wh": 10.7351,
+  "run_at": "24 Nov 2026, 14:16",
+  "energy_saved_pct": 54.7,
+  "gp_wh": 10.8718,
   "baseline_wh": 24.0,
-  "quality_retained_pct": 79.3,
-  "answers_correct_pct": 93.1,
+  "quality_retained_pct": 78.9,
+  "answers_correct_pct": 94.7,
   "quality_retained_incl_large_pct": 88.0,
-  "judged": 58,
+  "judged": 57,
   "unjudged": 0,
   "verdicts": {
     "worse": 12,
-    "same": 45,
-    "large model": 42,
+    "same": 44,
+    "large model": 43,
     "better": 1
   },
   "trap_count": 10,
   "paraphrase_count": 15,
-  "router_accuracy_pct": 92.9,
+  "router_accuracy_pct": 90.6,
   "router_n": 85,
   "confusion": {
-    "small_small": 44,
-    "small_large": 6,
+    "small_small": 42,
+    "small_large": 8,
     "large_small": 0,
     "large_large": 35
   },
@@ -30,16 +30,16 @@
   "cache_false_hit_rate_pct": 0.0,
   "unexpected_cache_hits": 0,
   "median_latency_s": {
-    "cache": 0.015,
-    "small": 0.222,
-    "large": 1.57,
+    "cache": 0.018,
+    "small": 0.221,
+    "large": 1.622,
     "small+large": null
   },
-  "measured": 48,
-  "estimated": 52,
+  "measured": 47,
+  "estimated": 53,
   "tiers": {
-    "small": 48,
-    "large": 42,
+    "small": 47,
+    "large": 43,
     "cache": 10
   },
   "judge_models": [
@@ -52,6 +52,6 @@
     "Cloud energy is an estimate (Google 2025 median prompt, range x0.5 to x2), not a measurement.",
     "Local energy counts the GPU only, not CPU, RAM or cooling.",
     "An LLM judge can be wrong; a 15-question hand check is in progress.",
-    "Router weights were lightly tuned after looking at this set (C chosen by cross-validation on training data, 15 training rows added), so router accuracy here is not fully unseen."
+    "Router tuning saw this set: training rows were added after earlier runs, and the unsure band (0.10) was chosen while checking it, so router accuracy here is not fully unseen. The router ignores trailing punctuation and case, so casually typed questions route the same as these."
   ]
 }
