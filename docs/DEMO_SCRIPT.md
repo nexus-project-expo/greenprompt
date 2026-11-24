@@ -1,6 +1,6 @@
 # Demo script (5 minutes + 5 minutes Q&A)
 
-Before the slot: laptop plugged in, other GPU apps closed, cache and dashboard cleared with `python scripts/reset_demo.py --cache` (server stopped; a cached "normalization" answer would skip the live power chart at 1:30), app then started and warmed up, phone hotspot ready as backup internet, backup video open in another window.
+Before the slot: laptop plugged in, other GPU apps closed, cache and dashboard cleared with `python scripts/reset_demo.py --cache` (server stopped; a cached "normalization" answer would skip the live power chart at 1:30), app then started and warmed up, practice questions removed with "Clear" under "Your questions" (that list lives in the browser, so the reset script can't clear it), phone hotspot ready as backup internet, backup video open in another window.
 
 | Time | Who | What happens on screen | What we say |
 |---|---|---|---|
