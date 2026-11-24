@@ -59,10 +59,16 @@ WORD = re.compile(r"[A-Za-z][A-Za-z0-9-]*")  # "India's" -> "India", "s"
 def followup_reason(prompt: str) -> str | None:
     if FOLLOWUP_PHRASES.search(prompt):
         return "refers to an earlier message"
-    # "how does that work?", or a short prompt built around a pronoun ("why is that?", "explain it simply").
-    if FOLLOWUP_START.search(prompt) or (len(prompt.split()) <= 6 and PRONOUNS.search(prompt)):
+    # "how does that work?", "and for germany?", a short prompt built around a pronoun ("why is that?"), or a short
+    # instruction with no subject of its own ("give an example", "in simpler words", "summarise in 3 points").
+    short = len(prompt.split()) <= 6
+    if (FOLLOWUP_START.search(prompt) or CONNECTOR_START.search(prompt)
+            or (short and (PRONOUNS.search(prompt) or not has_own_subject(prompt)))):
         return PRONOUN_ONLY
     return None
+
+
+CONNECTOR_START = re.compile(r"^\s*(and|but|so|also|or)\b", re.I)
 
 
 PRONOUN_ONLY = "refers to something it doesn't name"
@@ -73,11 +79,16 @@ yes it its that this they them those these he she his her their define explain d
 work works working happen happens happened true false example examples simply simple detail details briefly term word okay
 ok right wrong really thing things elaborate summarise summarize clarify continue expand repeat difference better worse good
 bad correct sure use used uses purpose made called name named mean possible matter matters compare compared
-differ different related important""".split())
+differ different related important simpler shorter longer short long point points bullet bullets summarise summary
+translate rewrite rephrase words sentence sentences line lines list steps less version format table answer english
+hindi kannada tamil telugu marathi malayalam bengali urdu french spanish german instead other another one two""".split())
 
 
 def has_own_subject(prompt: str) -> bool:
-    return any(w.lower() not in NOT_A_SUBJECT and len(w) > 2 for w in WORD.findall(prompt))
+    """A sum or a real number counts ("2+3", "in 2026"), a small count doesn't ("in 3 points"); so does any word that
+    isn't a pronoun, filler or instruction ("rain", "ai", "dna")."""
+    return bool(re.search(r"\d\s*[-+*/x×÷^%]\s*\d|\d{2,}", prompt)) or any(
+        w.lower() not in NOT_A_SUBJECT and len(w) > 1 for w in WORD.findall(prompt))
 
 
 def is_time_sensitive(prompt: str) -> bool:

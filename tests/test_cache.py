@@ -214,3 +214,17 @@ def test_long_numbers_fail_closed_even_in_a_sum(cache):
                                     "my card 4111x1111x1111x1111", "my aadhaar is 1234 5678 9012 + 0"])
 def test_calculation_exemption_cannot_hide_personal_data(cache, prompt):
     assert cache.is_cacheable(prompt, False) == (False, "looks like personal data")
+
+
+@pytest.mark.parametrize("prompt", ["give an example", "in simpler words", "summarise in 3 points", "shorter please",
+                                    "translate to hindi", "and for germany?"])
+def test_instruction_only_messages_are_follow_ups(prompt):
+    """These need the earlier answer: the server sends the chat history, and they are never cached."""
+    from greenprompt.cache import followup_reason
+    assert followup_reason(prompt)
+
+
+@pytest.mark.parametrize("prompt", ["what is ai", "what is 2+3", "2+3", "in 2026, whats 2+3", "Define osmosis."])
+def test_short_standalone_questions_are_not_follow_ups(prompt):
+    from greenprompt.cache import followup_reason
+    assert not followup_reason(prompt)
