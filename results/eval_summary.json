@@ -1,27 +1,26 @@
 {
   "n": 100,
-  "run_at": "24 Nov 2026, 14:16",
-  "energy_saved_pct": 54.7,
-  "gp_wh": 10.8718,
+  "run_at": "24 Nov 2026, 21:22",
+  "energy_saved_pct": 56.4,
+  "gp_wh": 10.4582,
   "baseline_wh": 24.0,
-  "quality_retained_pct": 78.9,
-  "answers_correct_pct": 94.7,
-  "quality_retained_incl_large_pct": 88.0,
-  "judged": 57,
+  "quality_retained_pct": 81.4,
+  "answers_correct_pct": 93.2,
+  "quality_retained_incl_large_pct": 89.0,
+  "judged": 59,
   "unjudged": 0,
   "verdicts": {
-    "worse": 12,
-    "same": 44,
-    "large model": 43,
-    "better": 1
+    "worse": 11,
+    "same": 48,
+    "large model": 41
   },
   "trap_count": 10,
   "paraphrase_count": 15,
-  "router_accuracy_pct": 90.6,
+  "router_accuracy_pct": 92.9,
   "router_n": 85,
   "confusion": {
-    "small_small": 42,
-    "small_large": 8,
+    "small_small": 44,
+    "small_large": 6,
     "large_small": 0,
     "large_large": 35
   },
@@ -30,16 +29,16 @@
   "cache_false_hit_rate_pct": 0.0,
   "unexpected_cache_hits": 0,
   "median_latency_s": {
-    "cache": 0.018,
-    "small": 0.221,
-    "large": 1.622,
+    "cache": 0.017,
+    "small": 0.196,
+    "large": 1.647,
     "small+large": null
   },
-  "measured": 47,
-  "estimated": 53,
+  "measured": 49,
+  "estimated": 51,
   "tiers": {
-    "small": 47,
-    "large": 43,
+    "small": 49,
+    "large": 41,
     "cache": 10
   },
   "judge_models": [

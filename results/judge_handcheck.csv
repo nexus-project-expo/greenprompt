@@ -1,6 +1,6 @@
 id,prompt,greenprompt_answer,baseline_answer,judge_verdict,judge_reason,your_verdict,agree
-15,What is a prime number?,A prime number is a natural number greater than 1 that has no positive divisors other than 1 and itself.,"A prime number is a natural number greater than 1 that has exactly two distinct positive divisors: 1 and itself. In other words, it cannot be written as the product of two smaller natural numbers. Examples are 2, 3, 5, 7, 11, 13, etc. (The number 1 is not prime because it has only one divisor.)",same,Both answers are mathematically correct and adequately define a prime number.,,
-1,What is normalization in DBMS?,"Normalization in a DBMS is a process used to eliminate data redundancy and dependency problems through a series of normal forms. The main goal is to organize the data in a database in such a way that it ensures data integrity and consistency. The process is typically applied to reduce the insertion, update, and deletion anomalies that can occur in a database design. Normalization divides a database into multiple tables and establishes relationships between those tables. The process of normalization is carried out by progressively removing redundancy and ensuring that each column in a table contains only one type of information.","**Normalization** is a systematic process used in relational database design to organize data so that:
+14,What is the speed of light in a vacuum?,"The speed of light in a vacuum is approximately 299,792,458 meters per second.","The speed of light in a vacuum is **299,792,458 m/s**.",same,Both answers provide the exact same scientifically correct value with different formatting.,,
+1,What is normalization in DBMS?,"Normalization in DBMS is a process used to eliminate redundancy and improve consistency and data integrity in a database. It involves organizing data into normalized tables to reduce data redundancy, which makes data more consistent and easier to maintain. The process of normalization is based on certain normal forms such as First Normal Form (1NF), Second Normal Form (2NF), Third Normal Form (3NF), Boyce-Codd Normal Form (BCNF), and others. Each form addresses specific issues related to data redundancy and dependency.","**Normalization** is a systematic process used in relational database design to organize data so that:
 
 1. **Redundancy is minimized** – the same piece of information isn’t stored in multiple places.
 2. **Data integrity is maintained** – updates, deletions, and insertions affect only the intended rows.
@@ -27,131 +27,27 @@ The process proceeds through a series of **normal forms** (NF), each adding stri
 - Excessive normalization can lead to many small tables, requiring many joins in queries, which may affect performance.
 - In practice, designers often stop at 3NF or BCNF and then selectively denormalize for performance-critical reports.
 
-In short, normalization is the disciplined way of structuring relational tables to store each fact once, enforce logical dependencies, and keep the database clean, consistent, and flexible.",worse,"Answer A provides a much more comprehensive, structured, and informative breakdown of normal forms and trade-offs.",,
-76,Explain normalization in DBMS.,"Normalization in a DBMS is a process used to eliminate data redundancy and dependency problems through a series of normal forms. The main goal is to organize the data in a database in such a way that it ensures data integrity and consistency. The process is typically applied to reduce the insertion, update, and deletion anomalies that can occur in a database design. Normalization divides a database into multiple tables and establishes relationships between those tables. The process of normalization is carried out by progressively removing redundancy and ensuring that each column in a table contains only one type of information.","**Normalization** is a systematic process used in relational database design to organize data so that:
+In short, normalization is the disciplined way of structuring relational tables to store each fact once, enforce logical dependencies, and keep the database clean, consistent, and flexible.",worse,"Answer A provides a much more thorough, structured, and informative explanation including specific normal forms and trade-offs.",,
+37,Write a short thank-you note to a teacher.,"Here's a short thank-you note for a teacher:
 
-1. **Redundancy (duplicate data) is minimized** – the same piece of information is stored only once.
-2. **Data integrity is improved** – updates, deletions, and insertions are less likely to produce inconsistencies.
-3. **Queries run efficiently** – tables are sized appropriately and relationships are clear.
+Dear [Teacher's Name],
 
-The process is carried out in a series of *normal forms* (NF). Each normal form adds stricter rules, building on the previous ones. Below is a concise overview of the most common forms and what they enforce.
+I just wanted to express my gratitude for your support and guidance this year. Your classes were not only informative but also inspiring. I am really grateful for all the effort you put into making my learning experience better.
 
----
+Thank you very much for everything.
 
-### 1. First Normal Form (1NF)
-- **Rule:** Every table cell must contain a single atomic (indivisible) value; each column must have a single data type; each row must be unique (usually enforced by a primary key).
-- **Purpose:** Eliminates repeating groups and ensures a flat, tabular structure.
-- **Typical violation:** A column that stores a list of values, e.g., “PhoneNumbers = ‘123‑456, 789‑012’”.
+Best regards,
+[Your Name]","Dear [Teacher’s Name],
 
-### 2. Second Normal Form (2NF)
-- **Prerequisite:** Table must already be in 1NF.
-- **Rule:** Every non‑key attribute must be fully functionally dependent on the whole primary key (not just part of it).
-- **Purpose:** Removes *partial dependencies* that occur when a composite primary key is used.
-- **Typical violation:** In a table with primary key (OrderID, ProductID), a column *CustomerName* depends only on OrderID, not on ProductID.
+Thank you for your patience, encouragement, and dedication. Your lessons have inspired me to keep learning and growing, and I truly appreciate all the effort you put into helping us succeed. 
 
-### 3. Third Normal Form (3NF)
-- **Prerequisite:** Table must be in 2NF.
-- **Rule:** No non‑key attribute may transitively depend on the primary key. In other words, every non‑key column must depend directly on the primary key, not on another non‑key column.
-- **Purpose:** Eliminates *transitive dependencies* that cause indirect redundancy.
-- **Typical violation:** Table with columns (EmployeeID, DepartmentID, DepartmentName). DepartmentName depends on DepartmentID, which in turn depends on EmployeeID.
+With gratitude,  
+[Your Name]",same,Both answers correctly provide a short thank-you note to a teacher as requested.,,
+87,Who was India's first Prime Minister?,India's first Prime Minister was Jawaharlal Nehru.,"India’s first Prime Minister was Jawaharlal Nehru, who served from August 15 1947 (the day India gained independence) until his death on May 27 1964.",same,Both answers are factually correct and directly answer the question adequately.,,
+3,What is 15% of 800?,"To find 15% of 800, you can multiply 800 by 0.15.
 
-### 4. Boyce‑Codd Normal Form (BCNF)
-- **Prerequisite:** Table must be in 3NF.
-- **Rule:** For every functional dependency X → Y, X must be a superkey (a set of columns that uniquely identifies a row).
-- **Purpose:** Handles certain edge cases where 3NF is insufficient, e.g., when two candidate keys overlap.
-
-### 5. Fourth Normal Form (4NF)
-- **Prerequisite:** Table must be in BCNF.
-- **Rule:** No table may contain two or more independent multi‑valued dependencies.
-- **Purpose:** Removes redundancy caused by storing multiple independent sets of repeating values in the same table.
-
-### 6. Fifth Normal Form (5NF) – also called Project‑Join Normal Form (PJNF)
-- **Prerequisite:** Table must be in 4NF.
-- **Rule:** Decomposition of the table into smaller tables must be lossless and must not create spurious tuples when the tables are recombined (joined).
-- **Purpose:** Handles complex join dependencies.
-
----
-
-## How Normalization Works – A Simple Example
-
-### Original (Unnormalized) Table
-
-| OrderID | CustomerName | CustomerAddress | Product1 | Product2 | Qty1 | Qty2 |
-|---------|--------------|----------------|----------|----------|------|------|
-
-Problems:
-- Repeating groups (`Product1`, `Product2`, `Qty1`, `Qty2`).
-- Update anomaly (change address in one row, forget the other).
-- Insertion anomaly (cannot insert a new order without a product).
-- Deletion anomaly (deleting the last product removes the customer info).
-
-### After Applying Normal Forms
-
-1. **1NF** – make each product a separate row.
-
-| OrderID | CustomerName | CustomerAddress | Product | Qty |
-|---------|--------------|----------------|---------|-----|
-
-2. **2NF** – remove partial dependencies (customer info depends only on CustomerID, not on OrderID).
-
-| CustomerID | CustomerName | CustomerAddress |
-|------------|--------------|-----------------|
-| C001       | Alice        | 123 Main St     |
-
-| OrderID | CustomerID |
-|---------|------------|
-| O1001   | C001       |
-
-| OrderID | Product | Qty |
-|---------|---------|-----|
-| O1001   | Widget  | 5   |
-| O1001   | Gizmo   | 2   |
-
-3. **3NF** – eliminate transitive dependencies (if we stored `Region` that depends on `CustomerAddress`, move it to a separate table).
-
-Result: a set of well‑structured tables with clear primary/foreign keys, no redundant data, and easy maintenance.
-
----
-
-## Benefits of Normalization
-
-| Benefit | Description |
-|---------|-------------|
-| **Reduced storage** | No duplicated rows/columns. |
-| **Data consistency** | A single source of truth for each fact. |
-| **Simpler updates** | Changing a value in one place updates it everywhere. |
-| **Better integrity enforcement** | Foreign‑key constraints naturally enforce relationships. |
-| **Easier query reasoning** | Logical schema reflects real‑world entities and relationships. |
-
----
-
-## When Not to Fully Normalize
-
-Normalization is a guideline, not an absolute rule. In some scenarios you may deliberately **denormalize** (introduce controlled redundancy) to:
-
-- Speed up read‑heavy queries (e.g., reporting or analytics).
-- Reduce the number of joins needed for frequent operations.
-- Align with the storage model of a NoSQL or column‑store database.
-
-When denormalizing, you must handle the extra complexity in your application or through database triggers, materialized views, etc.
-
----
-
-### Quick Checklist for Designers
-
-1. **Identify entities** (customers, orders, products, etc.).
-2. **Assign a primary key** for each entity.
-3. **Apply 1NF** – atomic columns, unique rows.
-4. **Check for partial dependencies** → move them to separate tables (2NF).
-5. **Check for transitive dependencies** → move them to separate tables (3NF).
-6. **Validate BCNF** for any remaining functional dependencies.
-7. **Consider 4NF/5NF** only for very complex data (often unnecessary in typical business apps).
-8. **Test with sample data** to ensure lossless decomposition (joins reconstruct original data).
-
-Following these steps gives you a clean, maintainable relational schema.",worse,"Answer A provides a comprehensive, detailed breakdown of all normal forms with clear examples, making it much more helpful.",,
-90,What is the SI unit of force called?,The SI unit of force is the Newton (N).,The SI unit of force is called the **newton** (symbol N).,same,Both answers are factually correct and directly answer the question adequately.,,
-3,What is 15% of 800?,15% of 800 is 120.,15 % of 800 is 120.,same,"Both answers are mathematically correct, concise, and provide the exact same accurate response to the question.",,
-11,What is a computer virus?,"A computer virus is a type of malware that can replicate itself and spread to other files, emails, disks, etc. It usually enters a computer system by infecting a program and executes when the program is executed. Once inside, it can cause a variety of damage, including deleting files or encrypting them for ransom.","A computer virus is a type of malicious software (malware) that can copy itself and spread from one computer to another. It typically attaches itself to legitimate programs or files, and when those programs are run or the infected files are opened, the virus activates. Once active, it can perform a variety of unwanted actions, such as:
+So, 15% of 800 is 120.",15 % of 800 is 120.,same,Both answers are completely correct and adequately answer the question.,,
+11,What is a computer virus?,"A computer virus is a type of malicious software program that can replicate itself and spread to other files, emails, or computers. It usually enters a computer system by means of an infected attachment in an email or a downloaded file and executes by itself when triggered, causing damage or stealing private information.","A computer virus is a type of malicious software (malware) that can copy itself and spread from one computer to another. It typically attaches itself to legitimate programs or files, and when those programs are run or the infected files are opened, the virus activates. Once active, it can perform a variety of unwanted actions, such as:
 
 - Corrupting or deleting data
 - Stealing personal information
@@ -159,16 +55,16 @@ Following these steps gives you a clean, maintainable relational schema.",worse,
 - Displaying unwanted messages or ads
 - Installing additional malware
 
-Viruses rely on user actions (like opening an infected email attachment or downloading a compromised file) or on exploiting software vulnerabilities to propagate. Their primary characteristic is self‑replication, which distinguishes them from other malware that may not copy themselves.",same,"Both answers accurately define a computer virus, explain how it spreads, and describe the potential damage it causes.",,
-17,What is the full form of HTTP?,HTTP stands for HyperText Transfer Protocol.,HTTP stands for **Hypertext Transfer Protocol**.,same,Both answers are completely correct and adequately provide the full form of HTTP with only minor formatting differences.,,
-2,Define photosynthesis.,"Photosynthesis is the process by which plants, some bacteria, and algae convert light energy into chemical energy, storing it in the form of sugar. This process primarily occurs in the chloroplasts of plant cells, using chlorophyll and other pigments to absorb light energy, which is then used to convert carbon dioxide and water into glucose and oxygen.","Photosynthesis is the process by which green plants, algae, and some bacteria convert light energy—usually from the sun—into chemical energy stored in sugar molecules. During photosynthesis, these organisms take in carbon dioxide (CO₂) from the air and water (H₂O) from the soil, use light energy captured by the pigment chlorophyll (or other pigments in non‑green organisms), and produce glucose (C₆H₁₂O₆) and oxygen (O₂) as by‑products. The overall simplified reaction can be written as:
+Viruses rely on user actions (like opening an infected email attachment or downloading a compromised file) or on exploiting software vulnerabilities to propagate. Their primary characteristic is self‑replication, which distinguishes them from other malware that may not copy themselves.",same,"Both answers are factually correct, accurate, and adequately explain what a computer virus is.",,
+16,What is 12 multiplied by 15?,12 multiplied by 15 equals 180.,12 multiplied by 15 equals 180.,same,Both answers are identical and correctly calculate that 12 multiplied by 15 is 180.,,
+2,Define photosynthesis.,"Photosynthesis is the process by which plants, algae, and some bacteria use sunlight, carbon dioxide, and water to produce oxygen and energy in the form of sugar. This process occurs in the chloroplasts of plant cells, utilizing chlorophyll to capture light energy.","Photosynthesis is the process by which green plants, algae, and some bacteria convert light energy—usually from the sun—into chemical energy stored in sugar molecules. During photosynthesis, these organisms take in carbon dioxide (CO₂) from the air and water (H₂O) from the soil, use light energy captured by the pigment chlorophyll (or other pigments in non‑green organisms), and produce glucose (C₆H₁₂O₆) and oxygen (O₂) as by‑products. The overall simplified reaction can be written as:
 
 6 CO₂ + 6 H₂O + light energy → C₆H₁₂O₆ + 6 O₂
 
-In short, photosynthesis transforms inorganic carbon and water into organic food and releases oxygen, providing the energy base for most life on Earth.",same,"Both answers are scientifically accurate, clear, and adequately define photosynthesis.",,
-4,What is the capital of Australia?,The capital of Australia is Canberra.,The capital of Australia is **Canberra**.,same,Both answers are factually correct and directly state that Canberra is the capital of Australia.,,
-86,What does HTTP stand for?,HTTP stands for Hypertext Transfer Protocol.,HTTP stands for **Hypertext Transfer Protocol**.,same,"Both answers are completely correct and adequately answer the question, differing only in markdown formatting.",,
-10,What is an operating system?,"An operating system is a software system that manages computer hardware and software resources, providing common services for computer programs. It acts as an intermediary between the hardware and software.","An operating system (OS) is system software that manages a computer’s hardware resources and provides common services for application programs. It acts as an intermediary between users/applications and the physical components of the machine, handling tasks such as:
+In short, photosynthesis transforms inorganic carbon and water into organic food and releases oxygen, providing the energy base for most life on Earth.",same,"Both answers are factually correct and adequately define photosynthesis, with Answer A just providing more detail.",,
+4,What is the capital of Australia?,The capital of Australia is Canberra.,The capital of Australia is **Canberra**.,same,"Both answers are factually correct and directly answer the question accurately, differing only in markdown formatting.",,
+83,Tell me the chemical symbol of gold.,The chemical symbol for gold is Au.,The chemical symbol for gold is **Au**.,same,"Both answers correctly provide the chemical symbol for gold, with Answer B just adding markdown bolding.",,
+10,What is an operating system?,"An operating system is a software system that manages computer hardware and software resources, providing common services for computer programs. It serves as an interface between the user and the computer hardware, allowing users to interact with the system and run application software.","An operating system (OS) is system software that manages a computer’s hardware resources and provides common services for application programs. It acts as an intermediary between users/applications and the physical components of the machine, handling tasks such as:
 
 - **Resource management** – allocating CPU time, memory, storage, and I/O devices.
 - **Process control** – creating, scheduling, and terminating processes or threads.
@@ -176,8 +72,19 @@ In short, photosynthesis transforms inorganic carbon and water into organic food
 - **Device control** – communicating with hardware via drivers and abstracting device details.
 - **User interface** – offering command‑line shells, graphical desktops, or APIs for programs to interact with the system.
 
-In short, the OS enables multiple programs to run efficiently, safely, and conveniently on the same hardware.",worse,"Both are correct, but Answer A is much more thorough and informative.",,
-87,Who was India's first Prime Minister?,India's first Prime Minister was Jawaharlal Nehru.,"India’s first Prime Minister was Jawaharlal Nehru, who served from August 15 1947 (the day India gained independence) until his death on May 27 1964.",same,Both answers are factually correct and directly answer the question adequately.,,
-28,Fix the grammar: me and him goes to college every day.,"Me and him go to college every day. (Note: This sentence sounds awkward and isn't common English. It would be better as ""I and he/goes to college every day"" or simply ""He and I go to college every day."")",He and I go to college every day.,worse,"Answer A provides the correct grammar, while Answer B is grammatically incorrect and gives flawed advice.",,
-93,What is 13 multiplied by 15?,13 multiplied by 15 equals 195.,13 multiplied by 15 equals 195.,same,Both answers are identical and correctly calculate that 13 multiplied by 15 is 195.,,
-8,What is the boiling point of water in Fahrenheit?,The boiling point of water in Fahrenheit is 212 degrees Fahrenheit.,The boiling point of water at standard atmospheric pressure (1 atm) is **212 °F**.,same,Both answers correctly state that the boiling point of water is 212 degrees Fahrenheit.,,
+In short, the OS enables multiple programs to run efficiently, safely, and conveniently on the same hardware.",same,Both answers are completely correct and adequately define an operating system.,,
+84,Who is called the father of computers?,Charles Babbage is known as the father of computers.,"The person most often called the “father of computers” is **Charles Babbage**. He designed the first mechanical, programmable computers—the Difference Engine and later the Analytical Engine—in the 19th century.",same,"Both correctly identify Charles Babbage as the father of computers, making them equally adequate.",,
+25,What is GDP?,"GDP stands for Gross Domestic Product. It is a measure of the total value of all goods and services produced within a country's borders in a specific time period, usually a year.","Gross Domestic Product (GDP) is the total monetary value of all finished goods and services produced within a country’s borders over a specific time period (usually a year or a quarter). It is commonly used as a broad measure of a nation’s overall economic activity and health. GDP can be calculated in three main ways, which should all give the same result:
+
+1. **Production (or output) approach** – adds up the value added at each stage of production across all industries.  
+2. **Income approach** – sums all incomes earned by factors of production, including wages, profits, rents, and taxes minus subsidies.  
+3. **Expenditure approach** – adds up all spending on final goods and services:  
+
+   `GDP = Consumption + Investment + Government Spending + (Exports – Imports)`
+
+Key points:
+- **Nominal vs. Real GDP:** Nominal GDP uses current market prices, while real GDP adjusts for inflation to reflect the true volume of production.
+- **GDP per capita:** GDP divided by the population, giving an average economic output per person and often used to compare living standards across countries.
+- **Limitations:** GDP does not account for informal economic activity, income distribution, environmental degradation, or non‑market services like household labor. It is a useful indicator, but not a complete measure of welfare or quality of life.",worse,"Both are correct, but Answer A provides a much more comprehensive and helpful explanation.",,
+92,What is 15% of 900?,15% of 900 is 135.,15 % of 900 is 135.,same,Both answers are completely correct and provide the exact same accurate calculation.,,
+8,What is the boiling point of water in Fahrenheit?,The boiling point of water in Fahrenheit is 212 degrees Fahrenheit.,The boiling point of water at standard atmospheric pressure (1 atm) is **212 °F**.,same,Both answers are factually correct and clearly state the boiling point of water in Fahrenheit.,,
