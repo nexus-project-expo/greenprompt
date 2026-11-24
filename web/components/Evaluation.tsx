@@ -81,7 +81,6 @@ export default function Evaluation({ data }: { data: EvalSummary | { error: stri
         <div className="prose">
           <h3>Method</h3>
           <p>{data.method}</p>
-          <p className="note">Run {data.run_at}</p>
         </div>
         <div className="prose">
           <h3>Limitations</h3>

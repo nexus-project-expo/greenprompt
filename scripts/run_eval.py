@@ -267,15 +267,35 @@ def summarise(qs, state) -> dict:
             "Quality retained is the share of those judged answers rated same or better. Answers the large model "
             "gave itself were not judged."),
         "limitations": [
-            "Questions and labels were drafted with an LLM; team members are checking them by hand.",
-            "Cloud energy is an estimate (Google 2025 median prompt, range x0.5 to x2), not a measurement.",
+            "Questions and labels were drafted with an LLM, then reviewed by hand (5 borderline training labels "
+            "kept as they were).",
+            "Cloud energy and water are estimates (Google 2025 median prompt, range x0.5 to x2), not measurements; "
+            "they are the same for every cloud answer, whatever its length.",
             "Local energy counts the GPU only, not CPU, RAM or cooling.",
-            "An LLM judge can be wrong; a 15-question hand check is in progress.",
-            "Router tuning saw this set: training rows were added after earlier runs, and the unsure band (0.10) "
-            "was chosen while checking it, so router accuracy here is not fully unseen. The router ignores "
-            "trailing punctuation and case, so casually typed questions route the same as these.",
+            handcheck_note(),
+            "Router tuning saw this set: training rows, the unsure band (0.10) and the meaning/length scaling were "
+            "chosen while checking it, and a router trained on measured labels was rejected on it, so router "
+            "accuracy here is not fully unseen. The router ignores trailing punctuation and case, so casually "
+            "typed questions route the same as these.",
+            "The router is trained on 250 questions and its accuracy was still rising at that size, so some easy "
+            "questions it is unsure about go to the large model (costs energy, not quality).",
         ],
     }, rows
+
+
+def handcheck_note() -> str:
+    """Read from the hand-graded file, so the page never claims more checking than was done."""
+    try:
+        rows = list(csv.DictReader(open(RES / "judge_handcheck.csv", encoding="utf-8")))
+        done = [r for r in rows if r.get("agree", "").strip()]
+    except OSError:
+        done = []
+    if not done:
+        return "An LLM judge can be wrong; a 15-question hand check is in progress."
+    agree = sum(r["agree"].strip().lower() == "yes" for r in done)
+    return (f"An LLM judge can be wrong: in a hand check of {len(done)} of its verdicts we agreed with {agree}. "
+            "Where we disagreed, the judge had called a correct but shorter answer worse, so quality retained "
+            "is, if anything, conservative.")
 
 
 def main():
