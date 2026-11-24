@@ -17,3 +17,5 @@ web/*.tsbuildinfo
 results/eval_state.json
 !results/eval_rows.csv
 !results/judge_handcheck.csv
+
+results/frames/
