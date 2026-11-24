@@ -22,10 +22,10 @@ function untex(s: string) {
     .replace(/\\\[([\s\S]+?)\\\]/g, (_, m) => "\n```\n" + m.trim() + "\n```\n")
     .replace(/\\\(([\s\S]+?)\\\)/g, "`$1`")
     .replace(/([_^])\{([^{}]*)\}/g, "$1$2") // flatten p^{2} first so \frac{p^{2}}{q^{2}} has no nested braces
+    .replace(/\\(?:text|mathrm|mathbf|operatorname)\{([^{}]*)\}/g, "$1") // before \frac, which needs brace-free parts
     .replace(/\\[dt]?frac\{([^{}]*)\}\{([^{}]*)\}/g, "($1)/($2)")
     .replace(/\\sqrt\{([^{}]*)\}/g, "√($1)")
     .replace(/\\sqrt\s*/g, "√")
-    .replace(/\\(?:text|mathrm|mathbf|operatorname)\{([^{}]*)\}/g, "$1")
     .replace(/\\([a-zA-Z]+)/g, (m, w) => sym[w] ?? m)
     .replace(/\\([%$,;!])/g, (_, c) => (c === "%" || c === "$" ? c : " "));
 }
