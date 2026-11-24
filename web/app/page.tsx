@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Answer from "@/components/Answer";
 import Dashboard from "@/components/Dashboard";
 import Evaluation, { type EvalSummary } from "@/components/Evaluation";
+import Footer from "@/components/Footer";
 import History, { addToHistory, loadHistory, saveHistory, type Past } from "@/components/History";
 import PowerChart from "@/components/PowerChart";
 import ReceiptCard, { SampleReceipt } from "@/components/Receipt";
@@ -204,6 +205,7 @@ export default function Home() {
                         <button key={s} onClick={() => send(s)} disabled={warming}>{s}</button>
                       ))}
                     </div>
+                    <Footer />
                   </div>
                 )}
                 {turns.map((t) => (
@@ -313,6 +315,7 @@ export default function Home() {
         )}
         {tab === "dashboard" && <Dashboard stats={stats} />}
         {tab === "evaluation" && <Evaluation data={evalData} />}
+        {tab !== "chat" && <Footer />}
       </main>
     </div>
   );
