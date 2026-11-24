@@ -72,7 +72,7 @@ REQUEST_TIMEOUT_S=30
 CACHE_SIM_THRESHOLD=0.92
 CACHE_TTL_HOURS=24
 ROUTER_HARD_THRESHOLD=0.5
-ROUTER_UNSURE_BAND=0.15         # p_hard within 0.5 +/- band => send to large
+ROUTER_UNSURE_BAND=0.10         # p_hard within 0.5 +/- band => send to large
 GRID_EF_G_PER_KWH=              # from CEA CO2 baseline database, see ENERGY_METHODOLOGY.md
 ```
 

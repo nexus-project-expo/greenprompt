@@ -26,8 +26,11 @@ RULES = [
         r"\b(prove|derive|show that|step[- ]by[- ]step|solve for|solve:|integrate|differentiate|integral"
         r"|derivative|probability that|show (the|your) working)\b", re.I)),
     ("comparison or analysis", re.compile(
-        r"\b(compare|contrast|analy[sz]e|evaluate|assess|critique)\b.*\b(and|vs\.?|versus|with|against)\b"
-        r"|\b(trade-?offs?|pros and cons)\b", re.I | re.S)),
+        r"\b(compare|contrast|assess)\b.*\b(and|vs\.?|versus|with|against)\b"
+        r"|\b(analy[sz]e|critique|critically)\b|\b(trade-?offs?|pros and cons)\b", re.I | re.S)),
+    ("design task", re.compile(
+        r"\b(design|architect)\b.{0,40}\b(system|backend|architecture|schema|database|app|api|service|pipeline)\b",
+        re.I | re.S)),
 ]
 NON_LATIN = re.compile(r"[^\x00-ɏ -⁯₠-⃏\s\d\W]")
 UNSURE = re.compile(
@@ -51,6 +54,20 @@ class RouteDecision:
     reasons: list[str] = field(default_factory=list)
 
 
+def normalise(prompt: str) -> str:
+    """What the classifier sees, in training and at runtime. The training questions are neatly typed and end
+    in "?", so without this a casual "who wrote the happy prince" looked hard just for missing its "?"."""
+    return prompt.strip().rstrip("?.! ").strip()
+
+
+def features(prompts: list[str]) -> np.ndarray:
+    """Classifier input: the meaning (MiniLM embedding) plus log word count. With the embedding alone the
+    classifier judged by topic ("who painted starry night" looked hard); length is a direct difficulty signal."""
+    E = embedder.embed([normalise(p) for p in prompts])
+    L = np.log1p([[len(p.split())] for p in prompts]).astype(np.float32)
+    return np.hstack([E, L])
+
+
 class Router:
     def __init__(self, model_path: Path | str | None = None):
         path = Path(model_path or MODEL_PATH)
@@ -64,7 +81,8 @@ class Router:
         if self.clf is None:
             return 0.5
         w, b = self.clf
-        return 1 / (1 + math.exp(-(float(embedder.embed([prompt])[0] @ w) + b)))
+        x = features([prompt])[0][: len(w)]  # a 384-weight model (embedding only) still loads
+        return 1 / (1 + math.exp(-(float(x @ w) + b)))
 
     def decide(self, prompt: str, accuracy_mode: bool) -> RouteDecision:
         if accuracy_mode:

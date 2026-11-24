@@ -15,6 +15,8 @@ from greenprompt.router import Router, escalation_reason, rule_reasons
     ("Derive the area of a circle", "multi-step maths"),
     ("Compare Python and Java for backends", "comparison or analysis"),
     ("What are the pros and cons of EVs?", "comparison or analysis"),
+    ("analyse the themes of hamlet", "comparison or analysis"),
+    ("design a chat app backend", "design task"),
     ("What is DNS? And how does caching work?", "several questions"),
     ("ಕನ್ನಡದಲ್ಲಿ ಉತ್ತರಿಸಿ: ಸೂರ್ಯ ಎಂದರೇನು?", "non-English script"),
     ("सूर्य क्या है?", "non-English script"),
@@ -96,7 +98,7 @@ def test_short_answer_to_short_question_is_fine():
 
 def test_trained_weights_are_committed_json():
     m = json.loads(router.MODEL_PATH.read_text())
-    assert len(m["coef"]) == 384 and m["embedder"].endswith("all-MiniLM-L6-v2")
+    assert len(m["coef"]) == 385 and m["embedder"].endswith("all-MiniLM-L6-v2")
     assert config.DATA_DIR == router.MODEL_PATH.parent
 
 
@@ -111,3 +113,16 @@ def test_requested_translation_and_english_do_not_escalate():
     assert escalation_reason("Translate to French: I would like a table for two tonight at eight.", fr, True) is None
     en = "Osmosis is the movement of water across a semipermeable membrane from a dilute solution to a concentrated one."
     assert escalation_reason("Define osmosis.", en, True) is None
+
+
+def test_trailing_punctuation_does_not_change_the_route(monkeypatch):
+    """Casual typing ("who wrote the happy prince", no "?") must route like the neat version."""
+    seen = []
+    monkeypatch.setattr(router.embedder, "embed", lambda texts: seen.extend(texts) or np.zeros((len(texts), 384), np.float32))
+    router.features(["Who wrote The Happy Prince?", "Who wrote The Happy Prince", "who wrote the happy prince!! "])
+    assert seen == ["Who wrote The Happy Prince"] * 2 + ["who wrote the happy prince"]  # the model lowercases itself
+
+
+def test_features_add_word_count():
+    x = router.features(["one two three"])
+    assert x.shape == (1, 385) and abs(x[0, -1] - np.log1p(3)) < 1e-6

@@ -29,9 +29,9 @@ def main() -> int:
     print(f"{len(train)} training rows: {int((y == 0).sum())} easy, {int(y.sum())} hard; "
           f"{sum(not r['checked'].strip() for r in train)} not yet checked by hand")
 
-    X = embedder.embed(prompts)
-    E = embedder.embed([r["prompt"] for r in evalq])
-    sims = E @ X.T
+    X = router.features(prompts)
+    E = embedder.embed([router.normalise(r["prompt"]) for r in evalq])
+    sims = E @ X[:, :-1].T  # meaning only, without the length column
     dups = [(evalq[i]["id"], evalq[i]["prompt"], prompts[j], sims[i, j])
             for i, j in enumerate(sims.argmax(1)) if sims[i, j] >= NEAR_DUP]
     if dups:
@@ -43,7 +43,7 @@ def main() -> int:
 
     # Pick regularisation by 5-fold CV on the training set only; the eval set is never used for tuning.
     scores = {}
-    for c in (1, 3, 10, 30, 100):
+    for c in (1, 3, 10, 30):
         cv = cross_val_score(LogisticRegression(C=c, class_weight="balanced", max_iter=5000), X, y, cv=5)
         scores[c] = (cv.mean(), cv.std())
     best = max(scores, key=lambda c: scores[c][0])
