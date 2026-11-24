@@ -83,6 +83,13 @@ def named_tokens(text: str) -> set[str]:
 
 
 BARE_MATHS = re.compile(r"^[\d\s.+\-*/x×÷^()%=?]+$")
+EXPRESSION = re.compile(r"[\d.()]+(?:[+\-*/x×÷^][\d.()]+)+")
+
+
+def maths(text: str) -> list[str]:
+    """Calculations in the prompt, in order ("10/2" vs "2/10" share numbers but not answers)."""
+    flat = re.sub(r"\s+", "", text.lower())
+    return [e.replace("x", "*").replace("×", "*").replace("÷", "/") for e in EXPRESSION.findall(flat)]
 
 
 def as_question(prompt: str) -> str:
@@ -169,11 +176,13 @@ class SemanticCache:
         if not rows:
             return None
         sims = np.stack([np.frombuffer(r[2], dtype=np.float32) for r in rows]) @ q
-        q_nums = numbers(prompt)
+        q_nums, q_maths = numbers(prompt), maths(prompt)
         top = int(np.argmax(sims))
         top_prompt, top_sim = rows[top][1], float(sims[top])
         if numbers(top_prompt) != q_nums:  # first: this rule blocks reuse at any similarity
             why = "numbers differ"
+        elif maths(top_prompt) != q_maths:
+            why = "different calculation"
         elif top_sim < self.threshold:
             why = f"similarity {top_sim:.2f}, needs {self.threshold:.2f}"
         else:
@@ -183,7 +192,7 @@ class SemanticCache:
             if sims[i] < self.threshold:
                 break
             rid, rprompt, _, answer, model, created = rows[i]
-            if numbers(rprompt) == q_nums and names_match(prompt, rprompt):
+            if numbers(rprompt) == q_nums and maths(rprompt) == q_maths and names_match(prompt, rprompt):
                 with self._db() as db:
                     db.execute("UPDATE cache SET hits = hits + 1 WHERE id = ?", (rid,))
                 return CacheHit(rid, answer, model, float(sims[i]), rprompt, (time.time() - created) / 3600)

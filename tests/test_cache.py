@@ -168,3 +168,18 @@ def test_bare_sum_is_embedded_as_a_question(cache):
     cache.store("what is 2+3", "5", "m")
     assert cache.lookup("2+3", False) is not None
     assert cache.lookup("2+4", False) is None
+
+
+@pytest.mark.parametrize("cached,asked", [("What is 10/2?", "What is 2/10?"), ("what is 7 - 4", "what is 4 - 7"),
+                                          ("2+3", "2*3"), ("What is 2+3?", "3+2")])
+def test_a_different_calculation_is_never_reused(cache, cached, asked):
+    """Same numbers, different order or operator: different answer, so no reuse at any similarity."""
+    cache.store(cached, "some answer", "m")
+    assert cache.lookup(asked, False) is None
+
+
+def test_same_calculation_written_differently_still_hits(cache):
+    from greenprompt.cache import maths
+    assert maths("What is 2 x 3?") == maths("2*3") == ["2*3"] and maths("explain max() in python") == []
+    cache.store("whats 12*4", "48", "m")
+    assert cache.lookup("12*4", False) is not None
