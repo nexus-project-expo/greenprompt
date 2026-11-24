@@ -35,6 +35,15 @@ PERSONAL = re.compile(
     r"|\b(password|passcode|passwd|otp|aadha+r|pan (card|number)|account (number|no)|a/c|cvv|ifsc"
     r"|credit card|debit card|card number|pin code|upi pin|ssn)\b", re.I)
 
+# Rule 3b: a prompt that steers what the answer says (or carries a link) is answered but never cached,
+# so nobody can plant an answer in the shared cache for other people to receive.
+STEERING = re.compile(
+    r"\b(ignore|disregard|forget)\b.{0,30}\b(instructions?|rules|above|previous|prompt)\b"
+    r"|\b(system prompt|jailbreak|developer mode|you are now|from now on|pretend (to be|you)|act as|role-?play)\b"
+    r"|\b(say|answer|reply|respond|tell (them|users|everyone|people))\b.{0,15}\b(that|with|only)\b"
+    r"|\b(start|end|begin|finish) (your|the) (answer|reply|response)\b"
+    r"|https?://|www\.|\b[\w-]+\.(com|net|org|io|in|xyz|ru|info|biz)\b", re.I | re.S)
+
 NUMBER = re.compile(r"\d+(?:\.\d+)?%?")
 WORD = re.compile(r"[A-Za-z][A-Za-z0-9-]*")  # "India's" -> "India", "s"
 
@@ -130,6 +139,8 @@ class SemanticCache:
             return False, reason
         if looks_personal(prompt):
             return False, "looks like personal data"
+        if STEERING.search(prompt):
+            return False, "tells the model what to say"
         return True, "cacheable"
 
     def lookup(self, prompt: str, has_history: bool) -> CacheHit | None:
