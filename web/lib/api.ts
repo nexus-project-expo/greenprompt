@@ -22,7 +22,10 @@ export type ChatResult = {
   answer: string;
   receipt: Receipt;
   route: { tier: string; p_hard: number; reasons: string[] } | null;
-  cache: { hit: boolean; cacheable: boolean; cache_reason: string; similarity?: number; matched_prompt?: string };
+  cache: {
+    hit: boolean; cacheable: boolean; cache_reason: string; similarity?: number; matched_prompt?: string;
+    nearest?: { prompt: string; similarity: number; why: string };
+  };
   error: string | null;
 };
 

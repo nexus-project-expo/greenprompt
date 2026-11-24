@@ -145,6 +145,7 @@ class SemanticCache:
 
     def lookup(self, prompt: str, has_history: bool) -> CacheHit | None:
         self.last_embed_s = 0.0
+        self.last_near = None  # on a miss: (closest cached prompt, similarity, why it was not reused)
         if not self.is_cacheable(prompt, has_history)[0]:
             return None
         q = self._embed(prompt)
@@ -157,6 +158,15 @@ class SemanticCache:
             return None
         sims = np.stack([np.frombuffer(r[2], dtype=np.float32) for r in rows]) @ q
         q_nums = numbers(prompt)
+        top = int(np.argmax(sims))
+        top_prompt, top_sim = rows[top][1], float(sims[top])
+        if numbers(top_prompt) != q_nums:  # first: this rule blocks reuse at any similarity
+            why = "numbers differ"
+        elif top_sim < self.threshold:
+            why = f"similarity {top_sim:.2f}, needs {self.threshold:.2f}"
+        else:
+            why = "different names"
+        self.last_near = (top_prompt, top_sim, why)
         for i in np.argsort(-sims):
             if sims[i] < self.threshold:
                 break

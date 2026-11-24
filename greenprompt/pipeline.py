@@ -64,6 +64,8 @@ def _handle(prompt: str, history: list[dict], accuracy_mode: bool, t0: float):
     hit = cache.lookup(prompt, has_history) if cacheable else None
     overhead_s = time.perf_counter() - t
     info = {"cacheable": cacheable, "cache_reason": why, "hit": hit is not None}
+    if not hit and getattr(cache, "last_near", None):  # shown on screen so a miss explains itself
+        info["nearest"] = {"prompt": cache.last_near[0], "similarity": cache.last_near[1], "why": cache.last_near[2]}
 
     if hit:
         receipt = energy.compute_receipt("cache", [], overhead_s, time.perf_counter() - t0, model=hit.model)

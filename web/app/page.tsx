@@ -62,6 +62,11 @@ function chips(r: ChatResult): string[] {
     return ["cache hit", `similarity ${r.cache.similarity?.toFixed(3)}`, `same question as "${r.cache.matched_prompt}"`];
   const out = [...(r.route?.reasons ?? [])];
   if (!r.cache.cacheable) out.push(`not cached: ${r.cache.cache_reason}`);
+  const n = r.cache.nearest;
+  if (n) {
+    const q = n.prompt.length > 60 ? `${n.prompt.slice(0, 57)}…` : n.prompt;
+    out.push(`closest cached: "${q}" (${n.why})`);
+  }
   return out;
 }
 

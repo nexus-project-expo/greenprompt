@@ -142,3 +142,19 @@ def test_steering_prompts_not_cacheable(cache, prompt):
     """Nobody can plant an answer in the shared cache for other people to receive."""
     assert cache.is_cacheable(prompt, False)[0] is False
     assert STEERING.search(prompt)  # caught by this rule even when an earlier rule refuses it first
+
+
+def test_miss_records_the_closest_question_and_why(cache):
+    """A miss explains itself on screen: closest cached question and the rule that refused it."""
+    cache.lookup("How do volcanoes erupt?", False)
+    prompt, sim, why = cache.last_near
+    assert prompt == ORIGINAL and sim < 0.92 and why.startswith("similarity")
+    cache.store("What is 5% of 800?", "40", "m")
+    assert cache.lookup("What is 50% of 800?", False) is None
+    assert cache.last_near[0] == "What is 5% of 800?" and cache.last_near[2] == "numbers differ"
+    assert cache.lookup(ORIGINAL, False) is not None  # a hit still works
+
+
+def test_no_near_miss_when_not_cacheable(cache):
+    cache.lookup("What is the weather today?", False)
+    assert cache.last_near is None
