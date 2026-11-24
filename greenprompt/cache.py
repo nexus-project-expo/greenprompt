@@ -82,6 +82,18 @@ def named_tokens(text: str) -> set[str]:
     return out
 
 
+BARE_MATHS = re.compile(r"^[\d\s.+\-*/x×÷^()%=?]+$")
+
+
+def as_question(prompt: str) -> str:
+    """A bare sum ("2+3") is too short for the embedder to place well (0.80 to "what is 2+3"), so it is
+    embedded as the question it means. Only the embedded text changes; the number rule still applies."""
+    p = prompt.strip()
+    if BARE_MATHS.match(p) and re.search(r"\d", p) and re.search(r"[+\-*/x×÷^%]", p):
+        return f"What is {p.rstrip('?= ')}?"
+    return prompt
+
+
 def names_match(a: str, b: str) -> bool:
     """Every named token of each prompt must appear, case-insensitively, in the other one."""
     wa, wb = {w.lower() for w in WORD.findall(a)}, {w.lower() for w in WORD.findall(b)}
@@ -123,7 +135,7 @@ class SemanticCache:
             self.last_embed_s = 0.0
             return self._last[1]
         t = time.perf_counter()
-        v = embedder.embed([prompt])[0]
+        v = embedder.embed([as_question(prompt)])[0]
         self.last_embed_s = time.perf_counter() - t
         self._last = (prompt, v)
         return v

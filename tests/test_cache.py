@@ -158,3 +158,13 @@ def test_miss_records_the_closest_question_and_why(cache):
 def test_no_near_miss_when_not_cacheable(cache):
     cache.lookup("What is the weather today?", False)
     assert cache.last_near is None
+
+
+def test_bare_sum_is_embedded_as_a_question(cache):
+    """Pallavi's normaliser: "2+3" reuses "what is 2+3"; "2+4" still never does (number rule)."""
+    from greenprompt.cache import as_question
+    assert as_question("2+3") == "What is 2+3?" and as_question(" 12 x 4 = ") == "What is 12 x 4?"
+    assert as_question("What is 2+3?") == "What is 2+3?" and as_question("2026") == "2026"
+    cache.store("what is 2+3", "5", "m")
+    assert cache.lookup("2+3", False) is not None
+    assert cache.lookup("2+4", False) is None
