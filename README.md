@@ -25,6 +25,7 @@ Before the slot, with the server running:
 
 ```
 python scripts/check_demo.py          # walks the definition-of-done checks against the live server
+python scripts/reset_demo.py --demo   # forget only the demo questions; keeps the rest of the cache and the dashboard
 python scripts/reset_demo.py          # stop the server first; clears the dashboard (add --cache to empty the cache)
 ```
 
