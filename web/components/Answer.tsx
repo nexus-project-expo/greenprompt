@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 
-// shortcut: covers the markdown small models actually emit (code, bold, lists, headings); swap for react-markdown if tables matter.
+// shortcut: covers the markdown models actually emit (code, bold, italics, lists, headings, tables); swap for react-markdown if more is needed.
 // An italic * must not touch a word, so plain-text maths like 2*3*4 stays as written.
 function inline(text: string): React.ReactNode[] {
   return text.split(/(\*\*[^*]+\*\*|`[^`]+`|(?<![\w*])\*[^*\s](?:[^*]*[^*\s])?\*(?![\w*]))/g).map((part, i) => {
@@ -30,6 +30,25 @@ function untex(s: string) {
     .replace(/\\([%$,;!])/g, (_, c) => (c === "%" || c === "$" ? c : " "));
 }
 
+// A markdown table: header row, then a |---|---| separator, then body rows. Captured so split() keeps it.
+const TABLE = /(^\|.*\|[ \t]*\n\|[ \t:|-]*-{3,}[ \t:|-]*\|[ \t]*(?:\n\|.*\|[ \t]*)*)/m;
+
+function Table({ src }: { src: string }) {
+  const rows = src.trim().split("\n").map((r) =>
+    r.trim().replace(/^\||\|$/g, "").split(/(?<!\\)\|/).map((c) => c.trim().replace(/\\\|/g, "|")));
+  const [head, , ...body] = rows;
+  const cell = (c: string) =>
+    c.split(/<br\s*\/?>/i).map((s, n) => <Fragment key={n}>{n > 0 && <br />}{inline(s)}</Fragment>);
+  return (
+    <div className="table-wrap">
+      <table>
+        <thead><tr>{head.map((c, j) => <th key={j}>{cell(c)}</th>)}</tr></thead>
+        <tbody>{body.map((r, j) => <tr key={j}>{r.map((c, m) => <td key={m}>{cell(c)}</td>)}</tr>)}</tbody>
+      </table>
+    </div>
+  );
+}
+
 export default function Answer({ text: raw }: { text: string }) {
   const text = untex(raw);
   const blocks: React.ReactNode[] = [];
@@ -48,8 +67,14 @@ export default function Answer({ text: raw }: { text: string }) {
       blocks.push(ordered ? <ol key={k} start={start}>{items}</ol> : <ul key={k}>{items}</ul>);
       list = [];
     };
-    chunk.split(/\n{2,}|\n(?=\s*(?:[-*]|\d+\.)\s)|\n(?=#)/).forEach((para, j) => {
-      const k = `${i}-${j}`;
+    chunk.split(TABLE).forEach((seg, t) => {
+    if (t % 2 === 1) {
+      flush(`${i}-${t}f`);
+      blocks.push(<Table key={`${i}-t${t}`} src={seg} />);
+      return;
+    }
+    seg.split(/\n{2,}|\n(?=\s*(?:[-*]|\d+\.)\s)|\n(?=#)/).forEach((para, j) => {
+      const k = `${i}-${t}-${j}`;
       const p = para.trim();
       if (!p) return;
       if (/^([-*_])\1{2,}$/.test(p)) {
@@ -73,6 +98,7 @@ export default function Answer({ text: raw }: { text: string }) {
       }
       blocks.push(<h4 key={k}>{inline(h[1])}</h4>);
       if (h[2]?.trim()) blocks.push(<p key={`${k}b`}>{inline(h[2].trim())}</p>); // text right under the heading
+    });
     });
     flush(`${i}-end`);
   });
