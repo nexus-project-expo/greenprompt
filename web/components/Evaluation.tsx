@@ -36,7 +36,6 @@ export default function Evaluation({ data }: { data: EvalSummary | { error: stri
       </p>
     );
   const c = data.confusion;
-  const v = data.verdicts;
   return (
     <div className="dash">
       <section className="tiles">
@@ -61,11 +60,6 @@ export default function Evaluation({ data }: { data: EvalSummary | { error: stri
           <span className="t-sub">on {data.trap_count} traps; {pct(data.paraphrase_hit_rate_pct)} of paraphrases hit</span>
         </div>
       </section>
-      <p className="note">
-        {data.n} questions. {data.judged} answers not from the large model were judged by {data.judge_models.join(", ")}:{" "}
-        {v.better ?? 0} better, {v.same ?? 0} same, {v.worse ?? 0} worse{data.unjudged ? `, ${data.unjudged} not judged` : ""}. Counting the large model's own answers as retained gives {pct(data.quality_retained_incl_large_pct)}. {data.measured} receipts measured on the GPU,{" "}
-        {data.estimated} estimated.
-      </p>
       <figure className="panel">
           <figcaption>Router decisions, label vs route</figcaption>
           <table className="confusion">
