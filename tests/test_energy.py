@@ -94,8 +94,10 @@ def test_missing_grid_factor_is_labelled(monkeypatch):
 @pytest.mark.parametrize("idle,limit,util,busy", [
     (13.0, 95.0, 30.0, False),   # browser open: high utilisation at idle clocks, low power
     (88.0, 95.0, 29.0, True),    # a game running
-    (13.0, None, 30.0, True),    # no power limit: fall back to utilisation
-    (13.0, None, 2.0, False),
+    (9.6, None, 30.0, False),    # on battery the limit is hidden: judge by idle watts, not utilisation
+    (60.0, None, 30.0, True),    # no limit, but a game is drawing power
+    (None, None, 30.0, True),    # no power reading at all: fall back to utilisation
+    (None, None, 2.0, False),
 ])
 def test_gpu_busy_uses_idle_power(monkeypatch, idle, limit, util, busy):
     monkeypatch.setattr(energy, "IDLE_W", idle)

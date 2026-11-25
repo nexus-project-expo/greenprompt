@@ -62,7 +62,12 @@ def read_power_limit() -> float | None:
 def gpu_busy() -> bool:
     if IDLE_W is not None and POWER_LIMIT_W:
         return IDLE_W > BUSY_POWER_FRACTION * POWER_LIMIT_W
+    if IDLE_W is not None:  # on battery the driver hides the limit; utilisation then misreads a browser as busy
+        return IDLE_W > BUSY_IDLE_W
     return IDLE_UTIL_PCT is not None and IDLE_UTIL_PCT > BUSY_UTIL_PCT
+
+
+BUSY_IDLE_W = 30.0  # no power limit known: an "idle" draw above this means a game or video is running
 
 
 def read_util() -> float | None:
